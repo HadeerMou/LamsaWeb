@@ -36,7 +36,7 @@ export default function About({ toggleCartVisibility, cart, totalQuantity }) {
         </div>
       </section>
       <div className="scroll overflow-hidden flex">
-        <ul className="flex gap-6 sm:gap-10 items-center !py-4 animate-[infinite-scroll_60s_linear_infinite]">
+        <ul className="flex gap-6! sm:gap-10! lg:gap-16! items-center !py-4 animate-[infinite-scroll_60s_linear_infinite]">
           {[...Array(10)].map((_, i) => (
             <>
               <li className="text-xl sm:text-2xl font-bold">

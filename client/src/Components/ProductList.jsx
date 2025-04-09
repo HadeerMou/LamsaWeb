@@ -76,20 +76,20 @@ function ProductList({ addToCart }) {
   }
 
   return (
-    <div className="product-list">
-      <div className="title">
+    <div className="py-10! !p-3 sm:p-10 lg:px-6!">
+      <div className="">
         <h1 className="text-5xl sm:text-xl font-bold text-center !mb-7">
           {categoryName}
         </h1>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 !gap-6 !py-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 py-8">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => {
           return (
             <div
               key={product.id}
               className="card p-4 bg-white rounded-lg shadow-md"
             >
-              <div className="img bg-gray-100 !p-18 sm:p-16 flex justify-center items-center rounded-md">
+              <div className="img bg-gray-100 p-5! lg:p-18! sm:p-10! flex justify-center items-center rounded-md">
                 <img
                   className="rounded-md shadow-[rgba(0,0,0,0.488)_-4px_4px_15px] max-w-[250px]"
                   src="\assets\Untitled-10-03.jpg"
@@ -110,9 +110,9 @@ function ProductList({ addToCart }) {
                     : "N/A"}
                 </p>
                 <h4 className="text-success">{translations.prodOndm}</h4>
-                <div className="bottom !p-4">
+                <div className="bottom p-2! lg:p-4!">
                   <button
-                    className="bg-red-300! text-white !px-5 !py-2 rounded-md hover:bg-red-700! cursor-pointer"
+                    className="bg-red-300! text-xs lg:text-base text-white px-3! lg:px-5! !py-2 rounded-md hover:bg-red-700! cursor-pointer"
                     onClick={() => {
                       addToCart(product);
                     }}

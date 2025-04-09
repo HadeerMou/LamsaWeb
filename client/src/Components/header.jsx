@@ -1,5 +1,3 @@
-import logo from "../logo.png";
-import "./header.css";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "../TranslationContext"; // Import translation hook
 import { Link, useNavigate } from "react-router-dom";
@@ -64,7 +62,7 @@ function Header({ toggleCartVisibility, totalQuantity }) {
   let [open, setOpen] = useState(false);
 
   return (
-    <header className="bg-white">
+    <header className="bg-white m-3!">
       <div className="mx-auto flex h-16 items-center gap-8 px-4 sm:px-6 lg:px-8">
         <Link to="/">
           <h2>{translations.lamsa}</h2>
@@ -85,7 +83,7 @@ function Header({ toggleCartVisibility, totalQuantity }) {
               {translations.contact}
             </Link>
           </nav>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 lg:gap-4">
             <select
               name="lang"
               id="lang"
@@ -122,17 +120,17 @@ function Header({ toggleCartVisibility, totalQuantity }) {
               )}
             </div>
             <FaUserCircle
-              className="text-3xl text-red-300 cursor-pointer"
+              className="text-xl lg:text-3xl text-red-300 cursor-pointer"
               onClick={() => navigate("/profile")}
             />
             <CiShoppingCart
-              className="text-3xl text-red-300 cursor-pointer"
+              className="text-xl lg:text-3xl text-red-300 cursor-pointer"
               onClick={toggleCartVisibility}
             />
           </div>
 
           <button
-            className="flex md:hidden !p-2 !m-2 text-gray-600 !bg-transparent rounded-sm"
+            className="flex md:hidden !p-2 lg:m-2! text-gray-600 !bg-transparent rounded-sm"
             onClick={() => setOpen(!open)}
           >
             <span className="sr-only">Toggle menu</span>

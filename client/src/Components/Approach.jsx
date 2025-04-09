@@ -5,26 +5,38 @@ import { useTranslation } from "../TranslationContext";
 function Approach() {
   const { translations } = useTranslation();
   return (
-    <div className="flex flex-wrap approachContainer !p-10 justify-around items-center">
+    <div className="flex flex-wrap approachContainer px-2! pt-14! lg:p-10! justify-around items-center">
       <div className="left !mb-5">
-        <h1 className="!mb-[5rem] text-lg sm:text-xl md:text-3xl lg:text-4xl">
+        <h1 className="lg:mb-[5rem]! mb-4! text-xl! sm:text-2xl! md:text-3xl! lg:text-4xl!">
           {translations.ourapproach}
         </h1>
-        <div className="three flex flex-wrap !sm:flex-col gap-3">
-          <div className="part bg-black/1 !p-[50px] !sm:p-8 rounded-[5px] !border-l !border-[rgba(0, 0, 0, 0.44)]">
+        <div className="three flex flex-wrap sm:gap-2 lg:gap-3">
+          <div className="part bg-black/1 lg:p-[50px]! sm:p-10! p-5! rounded-[5px] !border-l !border-[rgba(0, 0, 0, 0.44)]">
             <i class="fa-solid fa-truck-fast"></i>
-            <h5 className="font-bold text-lg !mb-2">{translations.fastship}</h5>
-            <p className="w-50">{translations.fastcont}</p>
+            <h5 className="font-bold text-xs sm:text-base lg:text-lg !mb-2">
+              {translations.fastship}
+            </h5>
+            <p className="w-20 sm:w-40 lg:w-50 text-[8px] sm:text-sm lg:text-sm">
+              {translations.fastcont}
+            </p>
           </div>
-          <div className="part bg-black/1 !p-[50px] !sm:p-8 !border-l !border-[rgba(0, 0, 0, 0.44)] rounded-[5px]">
+          <div className="part bg-black/1 lg:p-[50px]! sm:p-10! p-5! !border-l !border-[rgba(0, 0, 0, 0.44)] rounded-[5px]">
             <i class="fa-solid fa-truck-fast"></i>
-            <h5 className="font-bold text-lg !mb-2">{translations.highqua}</h5>
-            <p className="w-50">{translations.highcont}</p>
+            <h5 className="font-bold text-xs sm:text-base lg:text-lg !mb-2">
+              {translations.highqua}
+            </h5>
+            <p className="w-20 sm:w-40 lg:w-50 text-[8px] sm:text-sm lg:text-sm">
+              {translations.highcont}
+            </p>
           </div>
-          <div className="part bg-black/1 !p-[50px] !sm:p-8 !border-l !border-[rgba(0, 0, 0, 0.44)] rounded-[5px]">
+          <div className="part bg-black/1 lg:p-[50px]! sm:p-10! p-5! !border-l !border-[rgba(0, 0, 0, 0.44)] rounded-[5px]">
             <i class="fa-regular fa-face-grin-stars"></i>
-            <h5 className="font-bold text-lg !mb-2">{translations.support}</h5>
-            <p className="w-50">{translations.supportcont}</p>
+            <h5 className="font-bold text-xs sm:text-base lg:text-lg !mb-2">
+              {translations.support}
+            </h5>
+            <p className="w-20 sm:w-40 lg:w-50 text-[8px] sm:text-sm lg:text-sm">
+              {translations.supportcont}
+            </p>
           </div>
         </div>
       </div>

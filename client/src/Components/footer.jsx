@@ -7,17 +7,17 @@ export default function Footer() {
   const navigate = useNavigate();
   return (
     <>
-      <footer className="!p-20  bg-red-300/40 shadow-2xl shadow-red-500 rounded-t-[14%]">
+      <footer className="p-12! lg:p-20!  bg-red-300/40 shadow-2xl shadow-red-500 rounded-t-[14%]">
         <div className="footer flex flex-col items-center mx-auto px-4 py-16 sm:px-6 lg:px-8">
-          <div className="flex justify-center text-gray-700 ">
-            <h1>{translations.lamsa}</h1>
+          <div className="flex justify-center text-gray-700">
+            <h1 className="text-2xl! lg:text-3xl!">{translations.lamsa}</h1>
           </div>
 
-          <p className="mx-auto !mt-8 !mb-15 max-w-md text-center leading-relaxed text-gray-500">
+          <p className="mx-auto !mt-8 mb-10! lg:mb-15! max-w-xs lg:max-w-md text-center text-xs lg:text-base leading-relaxed text-gray-500">
             {translations.foot}
           </p>
 
-          <ul className="flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
+          <ul className="flex flex-wrap justify-center gap-5 md:gap-8 lg:gap-12 text-xs! lg:text-base!">
             <li>
               <Link
                 className="text-gray-700 transition hover:text-gray-700/75"

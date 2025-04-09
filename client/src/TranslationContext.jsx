@@ -24,6 +24,7 @@ const translations = {
     highcont: "our products is of high quality",
     support: "Support 24/7",
     supportcont: "our support is available for 24/7 to help you",
+    featured: "Featured",
     ourpassion: "Our Passion is Your",
     inspairation: "Inspiration",
     passioncont:
@@ -198,6 +199,7 @@ const translations = {
     highcont: "منتجاتنا ذات جودة عالية",
     support: "دعم 24/7",
     supportcont: "دعمنا متاح على مدار الساعة طوال أيام الأسبوع لمساعدتك",
+    featured: "المميز",
     ourpassion: "شغفنا هو ",
     inspairation: "إلهامك",
     passioncont:
