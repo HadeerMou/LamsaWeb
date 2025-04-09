@@ -4,7 +4,7 @@ import { useTranslation } from "../TranslationContext";
 export default function HomeGrid() {
   const { translations } = useTranslation();
   return (
-    <div class="!pb-20  bg-red ">
+    <div class="!pb-20 lg:mt-15! bg-red ">
       <div className="relative flex items-center justify-center">
         <div className="img w-full">
           <img

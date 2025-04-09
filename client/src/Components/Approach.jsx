@@ -5,7 +5,7 @@ import { useTranslation } from "../TranslationContext";
 function Approach() {
   const { translations } = useTranslation();
   return (
-    <div className="flex flex-wrap approachContainer !p-7 justify-around items-center">
+    <div className="flex flex-wrap approachContainer !p-10 justify-around items-center">
       <div className="left !mb-5">
         <h1 className="!mb-[5rem] text-lg sm:text-xl md:text-3xl lg:text-4xl">
           {translations.ourapproach}
