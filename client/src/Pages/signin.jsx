@@ -145,7 +145,9 @@ function Signin({ userType }) {
         <h1 className="text-center text-2xl! lg:text-3xl! font-bold !mb-4">
           {translations.loginTitle}
         </h1>
-        <h2 className="text-center text-lg font-bold !mb-6">Sign in</h2>
+        <h2 className="text-center text-lg font-bold !mb-6">
+          {translations.login}
+        </h2>
         <form onSubmit={handleLogin}>
           <label className="block font-bold !mb-2" htmlFor="email">
             {translations.email}
