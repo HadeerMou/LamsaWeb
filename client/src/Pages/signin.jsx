@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from "../TranslationContext";
 
 function Signin({ userType }) {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { translations } = useTranslation();
 
   const handleLogin = async () => {
+    e.preventDefault();
     setError(""); // Reset errors
 
     try {
@@ -89,10 +91,10 @@ function Signin({ userType }) {
         </div>
         <div className="flex flex-col items-center justify-center w-1/2 h-200 !p-20 rounded-lg">
           <h1 className="text-3xl font-bold !mb-4">Welcome Back to LAMSA</h1>
-          <h2 className="text-xl font-bold !mb-6">Login</h2>
-          <form className="w-full">
+          <h2 className="text-xl font-bold !mb-6">{translations.signin}</h2>
+          <form onSubmit={handleLogin} className="w-full">
             <label className="block font-bold !mb-2" htmlFor="email">
-              Email
+              {translations.email}
             </label>
             <input
               className="bg-transparent !border !border-black/50 rounded-md !mb-5 !p-3 w-full"
@@ -100,7 +102,7 @@ function Signin({ userType }) {
               name="email"
             />
             <label className="block font-bold !mb-2" htmlFor="password">
-              Password
+              {translations.password}
             </label>
             <input
               className="bg-transparent !border !border-black/50 rounded-md !mb-1 !p-3 w-full"
@@ -118,16 +120,16 @@ function Signin({ userType }) {
               type="submit"
               className="!bg-red-700 text-white font-bold !py-3 rounded-lg w-full cursor-pointer"
             >
-              Sign in
+              {translations.signin}
             </button>
           </form>
           <div className="navto w-full flex gap-4 !mt-1">
-            <h5>Don't have an Account? </h5>
+            <h5>{translations.noacc}</h5>
             <p
               className="!text-red-500 cursor-pointer font-bold"
               onClick={() => navigate("/signup")}
             >
-              Sign Up
+              {translations.signup}
             </p>
           </div>
         </div>
