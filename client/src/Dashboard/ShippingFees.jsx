@@ -99,6 +99,8 @@ function ShippingFees() {
   };
 
   const handleDeleteFee = async (id) => {
+    const confirmDelete = window.confirm(`${translations.deleteFee}`);
+    if (!confirmDelete) return;
     try {
       console.log("Attempting to delete shipping fee with ID:", id);
       const token = localStorage.getItem("token");
@@ -242,9 +244,6 @@ function ShippingFees() {
                   )}
                 </tbody>
               </table>
-              <a onClick={fetchCities} className="showall">
-                {translations.showall}
-              </a>
             </div>
             <div className="toaddproduct">
               <button

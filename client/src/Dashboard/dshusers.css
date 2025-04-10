@@ -100,7 +100,9 @@
   color: var(--color-white);
   cursor: pointer;
 }
-
+.edit-user-modal {
+  padding: 20px;
+}
 /* Responsive */
 
 @media (max-width: 480px) {

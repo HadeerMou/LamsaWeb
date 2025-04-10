@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./dshproducts.css";
 import DASHHeader from "./DashboardComponents/dashHeader";
 import DashSidebar from "./DashboardComponents/dashSidebar";
@@ -15,10 +15,12 @@ function Dshproducts() {
   const [editingProduct, setEditingProduct] = useState(null);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
   const navigate = useNavigate();
-
+  const editModalRef = useRef(null);
   const [newProduct, setNewProduct] = useState({
-    name: "",
-    description: "",
+    nameEn: "",
+    nameAr: "",
+    descriptionEn: "",
+    descriptionAr: "",
     price: "",
     quantity: "",
     categoryId: "",
@@ -26,8 +28,10 @@ function Dshproducts() {
   });
 
   const [updatedProduct, setUpdatedProduct] = useState({
-    name: "",
-    description: "",
+    nameEn: "",
+    nameAr: "",
+    descriptionEn: "",
+    descriptionAr: "",
     price: "",
     quantity: "",
   });
@@ -40,75 +44,33 @@ function Dshproducts() {
     fetchProducts();
   }, []);
 
-  // Fetch product's first image by product ID
-  const fetchProductImage = async (productId) => {
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/product-images/product/${productId}`
-      );
-      console.log(
-        `API Response for product ${productId}:`,
-        response.data[0].imagePath
-      );
-      // Ensure the response has the expected structure
-      if (response.data && response.data.length > 0) {
-        return response.data[0].imagePath; // Return first image
-      }
-    } catch (error) {
-      console.error(`Error fetching image for product ${productId}:`, error);
-    }
-    return "/path/to/default/image.jpg"; // Fallback image
-  };
-  // Fetch product images by product ID
-
-  const fetchProductImages = async (productId) => {
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/product-images/product/${productId}`
-      );
-      console.log(`API Response for product ${productId}:`, response.data);
-
-      // Check if the response data and productImages exist
-      if (response.data && Array.isArray(response.data.productImages)) {
-        return response.data.productImages;
-      } else {
-        console.warn(`No images found for product ${productId}`);
-        return []; // Return empty array if no images
-      }
-    } catch (error) {
-      console.error(`Error fetching image for product ${productId}:`, error);
-      return []; // Return empty array in case of error
-    }
-  };
-
   // Fetch all products and attach images
   const fetchProducts = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/products`);
 
       if (response.data && Array.isArray(response.data)) {
-        const productsWithImage = response.data.map((product) => {
+        const productsWithMedia = response.data.map((product) => {
           // Extract the image from productImages
           const productImages = product.productImages || [];
-
-          // Check if productImages exists and has a default image
+          const productModel = product.productModel || [];
           const defaultImage = productImages.find((image) => image.isDefault);
-          console.log("Default Image Path:", defaultImage.imagePath);
-
-          // Use the default image or fallback to a placeholder image if no default image exists
           const imageUrl = defaultImage
             ? `https://${defaultImage.imagePath}`
-            : "/path/to/default/image.jpg"; // Fallback image
+            : "/path/to/default/image.jpg";
+          const modelUrl =
+            productModel.length > 0 ? productModel.modelPath : null;
+          console.log("Product Model Data:", productModel);
 
-          // Return the product with the image URL included
           return {
             ...product,
-            imageUrl: imageUrl, // Add the imageUrl to each product
+            imageUrl: imageUrl,
+            modelUrl: modelUrl,
           };
         });
 
-        console.log("Final Products with Images:", productsWithImage);
-        setProducts(productsWithImage); // Assuming you're using state management like setState or context
+        console.log("Final Products with media:", productsWithMedia);
+        setProducts(productsWithMedia); // Assuming you're using state management like setState or context
       } else {
         console.error(
           "No products found or incorrect data format:",
@@ -135,8 +97,10 @@ function Dshproducts() {
       const productResponse = await axios.post(
         `${API_BASE_URL}/products`,
         {
-          name: newProduct.name,
-          description: newProduct.description,
+          nameEn: newProduct.nameEn,
+          nameAr: newProduct.nameAr,
+          descriptionEn: newProduct.descriptionEn,
+          descriptionAr: newProduct.descriptionAr,
           price: newProduct.price,
           quantity: newProduct.quantity,
           categoryId: newProduct.categoryId,
@@ -149,9 +113,6 @@ function Dshproducts() {
         }
       );
       const createdProduct = productResponse.data;
-
-      console.log("Uploading image for product:", createdProduct.id);
-      console.log("Image file:", newProduct.imageFile);
 
       // Step 2: Upload Image if present (send as multipart/form-data)
       if (newProduct.imageFile) {
@@ -173,17 +134,34 @@ function Dshproducts() {
         );
       }
 
+      if (newProduct.modelFile) {
+        const modelFormData = new FormData();
+        modelFormData.append("modelFile", newProduct.modelFile);
+        modelFormData.append("productId", createdProduct.id);
+        console.log(`${API_BASE_URL}/product-model`);
+
+        await axios.post(`${API_BASE_URL}/product-model`, modelFormData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      }
+
       // Refresh Products
       fetchProducts();
 
       // Reset Form
       setNewProduct({
-        name: "",
-        description: "",
+        nameEn: "",
+        nameAr: "",
+        descriptionEn: "",
+        descriptionAr: "",
         price: "",
         quantity: "",
         categoryId: "",
         imageFile: null,
+        modelFile: null,
       });
     } catch (error) {
       console.error("Error creating product:", error);
@@ -192,6 +170,8 @@ function Dshproducts() {
 
   // Delete Product
   const handleDelete = async (productId) => {
+    const confirmDelete = window.confirm(`${translations.deleteProd}`);
+    if (!confirmDelete) return;
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${API_BASE_URL}/products/${productId}`, {
@@ -204,30 +184,21 @@ function Dshproducts() {
     }
   };
 
-  // Delete Product Image
-  const handleDeleteImage = async (imageId) => {
-    try {
-      const token = localStorage.getItem("token");
-      await axios.delete(`${API_BASE_URL}/product-images/${imageId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      fetchProducts();
-    } catch (error) {
-      console.error("Error deleting image:", error);
-    }
-  };
-
   // Open Edit Modal
   const handleEditClick = (product) => {
     setEditingProduct(product);
     setUpdatedProduct({
-      name: product.name,
-      description: product.description,
+      nameEn: product.nameEn,
+      nameAr: product.nameAr,
+      descriptionEn: product.descriptionEn,
+      descriptionAr: product.descriptionAr,
       price: product.price,
       quantity: product.quantity,
       categoryId: product.categoryId,
     });
+    setTimeout(() => {
+      editModalRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 200);
   };
   // Update Product and Image
   const handleUpdate = async () => {
@@ -236,8 +207,10 @@ function Dshproducts() {
 
       // Ensure categoryId is a number or null
       const formattedUpdatedProduct = {
-        name: updatedProduct.name,
-        description: updatedProduct.description,
+        nameEn: updatedProduct.nameEn,
+        nameAr: updatedProduct.nameAr,
+        descriptionEn: updatedProduct.descriptionEn,
+        descriptionAr: updatedProduct.descriptionAr,
         price: updatedProduct.price,
         quantity: updatedProduct.quantity,
         categoryId: updatedProduct.categoryId
@@ -264,6 +237,19 @@ function Dshproducts() {
     }
   };
 
+  const handleDeleteModel = async (productId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_BASE_URL}/product-model/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      fetchProducts(); // Refresh
+    } catch (error) {
+      console.error("Error deleting model:", error);
+    }
+  };
+
   return (
     <>
       <div className="wrap-container">
@@ -285,10 +271,13 @@ function Dshproducts() {
                     <th className="P.Id">{translations.pn}</th>
                     <th className="">{translations.productImage}</th>
                     <th className="prodname">{translations.prodname}</th>
+                    <th className="prodname">{translations.prodname}</th>
+                    <th className="desc">{translations.description}</th>
                     <th className="desc">{translations.description}</th>
                     <th className="price">{translations.price}</th>
                     <th className="">{translations.quantity}</th>
                     <th className="categoryid">{translations.categoryId}</th>
+                    <th>{translations.productmodel}</th>
                     <th>{translations.action}</th>
                   </tr>
                 </thead>
@@ -312,14 +301,27 @@ function Dshproducts() {
                           style={{ width: "50px", height: "50px" }}
                           alt={products.name}
                         />
-                        {console.log(products.imageUrl)}{" "}
-                        {/* Log each product's imageUrl */}
                       </td>
-                      <td>{products.name}</td>
-                      <td>{products.description}</td>
+                      <td>{products.nameEn}</td>
+                      <td>{products.nameAr}</td>
+                      <td>{products.descriptionEn}</td>
+                      <td>{products.descriptionAr}</td>
                       <td>{products.price}</td>
                       <td>{products.quantity}</td>
                       <td>{products.categoryId}</td>
+                      <td>
+                        {products.modelUrl ? (
+                          <model-viewer
+                            src={products.modelUrl}
+                            alt="3D Model"
+                            auto-rotate
+                            camera-controls
+                            style={{ width: "100px", height: "100px" }}
+                          />
+                        ) : (
+                          "No 3D Model"
+                        )}
+                      </td>
                       <td>
                         <button
                           className="edit"
@@ -350,14 +352,16 @@ function Dshproducts() {
                 className="addprod"
                 onClick={() => setShowCreateProduct(!showCreateProduct)}
               >
-                {showCreateProduct ? "Close" : `${translations.addprod}`}
+                {showCreateProduct
+                  ? `${translations.close}`
+                  : `${translations.addprod}`}
               </button>
             </div>
 
             {/* Create Product Form */}
             {showCreateProduct && (
               <div className="create-user-form">
-                <h3>Create New Product</h3>
+                <h3>{translations.creatNewProd}</h3>
                 <input
                   type="file"
                   onChange={(e) =>
@@ -368,21 +372,50 @@ function Dshproducts() {
                   }
                 />
                 <input
-                  type="text"
-                  placeholder="Name"
-                  value={newProduct.name}
+                  type="file"
+                  accept=".glb,.gltf"
                   onChange={(e) =>
-                    setNewProduct({ ...newProduct, name: e.target.value })
+                    setNewProduct({
+                      ...newProduct,
+                      modelFile: e.target.files[0],
+                    })
                   }
                 />
                 <input
                   type="text"
-                  placeholder="Description"
-                  value={newProduct.description}
+                  placeholder="Name in English"
+                  value={newProduct.nameEn}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, nameEn: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Name in Arabic"
+                  value={newProduct.nameAr}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, nameAr: e.target.value })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Description in English"
+                  value={newProduct.descriptionEn}
                   onChange={(e) =>
                     setNewProduct({
                       ...newProduct,
-                      description: e.target.value,
+                      descriptionEn: e.target.value,
+                    })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Description in Arabic"
+                  value={newProduct.descriptionAr}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      descriptionAr: e.target.value,
                     })
                   }
                 />
@@ -416,32 +449,68 @@ function Dshproducts() {
                     })
                   }
                 />
-                <button onClick={handleCreateProduct}>Create Product</button>
+                <button onClick={handleCreateProduct}>
+                  {translations.creatProd}
+                </button>
               </div>
             )}
             {/* Edit User Modal */}
             {editingProduct && (
-              <div className="edit-user-modal">
-                <h3>Edit Product</h3>
+              <div ref={editModalRef} className="edit-user-modal">
+                <h3>{translations.editProd}</h3>
                 <input
-                  type="text"
-                  placeholder="Name"
-                  value={updatedProduct.name}
+                  type="file"
+                  accept=".glb,.gltf"
+                  placeholder="product Model"
+                  value={updatedProduct.modelFile}
                   onChange={(e) =>
                     setUpdatedProduct({
                       ...updatedProduct,
-                      name: e.target.value,
+                      modelFile: e.target.value,
                     })
                   }
                 />
                 <input
                   type="text"
-                  placeholder="Description"
-                  value={updatedProduct.description}
+                  placeholder="Name in English"
+                  value={updatedProduct.nameEn}
                   onChange={(e) =>
                     setUpdatedProduct({
                       ...updatedProduct,
-                      description: e.target.value,
+                      nameEn: e.target.value,
+                    })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Name in Arabic"
+                  value={updatedProduct.nameAr}
+                  onChange={(e) =>
+                    setUpdatedProduct({
+                      ...updatedProduct,
+                      nameAr: e.target.value,
+                    })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Description in English"
+                  value={updatedProduct.descriptionEn}
+                  onChange={(e) =>
+                    setUpdatedProduct({
+                      ...updatedProduct,
+                      descriptionEn: e.target.value,
+                    })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Description in Arabic"
+                  value={updatedProduct.descriptionAr}
+                  onChange={(e) =>
+                    setUpdatedProduct({
+                      ...updatedProduct,
+                      descriptionAr: e.target.value,
                     })
                   }
                 />
@@ -478,8 +547,15 @@ function Dshproducts() {
                     })
                   }
                 />
-                <button onClick={handleUpdate}>Update</button>
-                <button onClick={() => setEditingProduct(null)}>Cancel</button>
+                <button className="addprod" onClick={handleUpdate}>
+                  {translations.update}
+                </button>
+                <button
+                  className="addprod"
+                  onClick={() => setEditingProduct(null)}
+                >
+                  {translations.cancel}
+                </button>
               </div>
             )}
           </main>

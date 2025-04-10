@@ -90,6 +90,8 @@ function AdminPage() {
 
   // Delete admin
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(`${translations.deleteAdmin}`);
+    if (!confirmDelete) return;
     try {
       const token = localStorage.getItem("token"); // Get token from storage
       await axios.delete(`${API_BASE_URL}/admins/${id}`, {
@@ -173,7 +175,7 @@ function AdminPage() {
                           className="edit"
                           onClick={() => handleEditClick(admin)}
                         >
-                          Edit
+                          {translations.edit}
                         </button>
                         <button
                           className="delete"
@@ -200,7 +202,7 @@ function AdminPage() {
           {/* Create Admin Form */}
           {showCreateAdmin && (
             <div className="create-user-form">
-              <h3>Create New Admin</h3>
+              <h3>{translations.createnewadmin}</h3>
               <input
                 type="email"
                 placeholder="Email"
@@ -226,7 +228,7 @@ function AdminPage() {
           {/* Edit User Modal */}
           {editingAdmin && (
             <div className="edit-user-modal">
-              <h3>Edit Admin</h3>
+              <h3>{translations.editadmin}</h3>
               <input
                 type="email"
                 placeholder="Email"
@@ -235,8 +237,12 @@ function AdminPage() {
                   setUpdatedAdmin({ ...updatedAdmin, email: e.target.value })
                 }
               />
-              <button onClick={handleUpdate}>Update</button>
-              <button onClick={() => setEditingAdmin(null)}>Cancel</button>
+              <button className="addprod" onClick={handleUpdate}>
+                {translations.update}
+              </button>
+              <button className="addprod" onClick={() => setEditingAdmin(null)}>
+                {translations.cancel}
+              </button>
             </div>
           )}
         </main>

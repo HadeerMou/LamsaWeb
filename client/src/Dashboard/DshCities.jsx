@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./dshusers.css";
 import DASHHeader from "./DashboardComponents/dashHeader";
 import DashSidebar from "./DashboardComponents/dashSidebar";
@@ -7,7 +7,7 @@ import axios from "axios";
 
 function DshCities() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
+  const editModalRef = useRef(null);
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
   const [showCreateCity, setShowCreateCity] = useState(false);
   const [city, setCity] = useState([]);
@@ -87,6 +87,8 @@ function DshCities() {
 
   // Delete city
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(`${translations.deleteCity}`);
+    if (!confirmDelete) return;
     try {
       const token = localStorage.getItem("token"); // Get token from storage
       await axios.delete(`${API_BASE_URL}/cities/${id}`, {
@@ -105,6 +107,9 @@ function DshCities() {
   const handleEditClick = (city) => {
     setEditingCity(city);
     setUpdatedCity({ name: city.name, countryId: city.countryId });
+    setTimeout(() => {
+      editModalRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 200);
   };
 
   // Update city
@@ -197,7 +202,6 @@ function DshCities() {
                   ? `${translations.close}`
                   : `${translations.createCity}`}
               </button>
-              <button className="delete">{translations.delete}</button>
             </div>
             {showCreateCity && (
               <div className="createcity">
@@ -225,7 +229,7 @@ function DshCities() {
             )}
             {/* Edit City Modal */}
             {editingCity && (
-              <div className="edit-user-modal">
+              <div ref={editModalRef} className="edit-user-modal">
                 <h3>Edit City</h3>
                 <input
                   type="text"
@@ -246,8 +250,15 @@ function DshCities() {
                     setUpdatedCity({ ...updatedCity, name: e.target.value })
                   }
                 />
-                <button onClick={handleUpdate}>Update</button>
-                <button onClick={() => setEditingCity(null)}>Cancel</button>
+                <button className="addprod" onClick={handleUpdate}>
+                  Update
+                </button>
+                <button
+                  className="addprod"
+                  onClick={() => setEditingCity(null)}
+                >
+                  Cancel
+                </button>
               </div>
             )}
           </main>

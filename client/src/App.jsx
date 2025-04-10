@@ -9,9 +9,7 @@ import Contact from "./Pages/contact";
 import Checkout from "./Pages/checkout";
 import ProductView from "./Pages/productView";
 import Dshproducts from "./Dashboard/dshproducts";
-import DshChat from "./Dashboard/DshChat";
 import DshUsers from "./Dashboard/DshUsers";
-import DshMessages from "./Dashboard/DshMessages";
 import DshOrders from "./Dashboard/DshOrders";
 import "./Dashboard/dash.css";
 import Dashboard from "./Dashboard/dashboard";
@@ -200,9 +198,7 @@ function App() {
           />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/products" element={<Dshproducts />} />
-          <Route path="/dashboard/messages/chat" element={<DshChat />} />
           <Route path="/dashboard/users" element={<DshUsers />} />
-          <Route path="/dashboard/messages" element={<DshMessages />} />
           <Route path="/dashboard/orders" element={<DshOrders cart={cart} />} />
           <Route path="/login" element={<Signin userType="USER" />} />
           <Route path="/admin-login" element={<Signin userType="ADMIN" />} />

@@ -63,6 +63,13 @@ a {
   padding: 5px 10px;
   color: white;
 }
+.file {
+  border-radius: 3px;
+  padding: 5px;
+}
+.edit-category-modal {
+  padding: 20px;
+}
 
 @media (max-width: 700px) {
   .wrap-container {

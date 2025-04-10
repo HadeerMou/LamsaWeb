@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import {
+  BsFillBellFill,
+  BsFillEnvelopeFill,
+  BsPersonCircle,
+  BsSearch,
+  BsJustify,
+} from "react-icons/bs";
 import { useTranslation } from "../../TranslationContext";
 import { useCurrency } from "../../CurrencyContext";
 
@@ -11,6 +18,10 @@ function DASHHeader({ OpenSidebar }) {
     const newCurrency = event.target.value;
     changeCurrency(newCurrency); // Update Currency in context
   };
+
+  useEffect(() => {
+    setSelectedLanguage(localStorage.getItem("language") || "en");
+  }, []);
 
   const handleLanguageChange = (event) => {
     const newLanguage = event.target.value;
@@ -42,9 +53,9 @@ function DASHHeader({ OpenSidebar }) {
   };
   return (
     <header className="header">
-      {/*    <div className="menu-icon">
+      <div className="menu-icon">
         <BsJustify className="icon" onClick={OpenSidebar} />
-      </div>*/}
+      </div>
       <div className="header-left">
         <div class="admin">
           <div class="admin-name">
@@ -63,8 +74,8 @@ function DASHHeader({ OpenSidebar }) {
             value={selectedCurrency}
             onChange={handleCurrencyChange}
           >
-            <option value="egp">Egp</option>
-            <option value="dollar">Dollar</option>
+            <option value="egp">{translations.egp}</option>
+            <option value="dollar">{translations.dollar}</option>
           </select>
         </div>
         <div className="lang">
@@ -74,8 +85,8 @@ function DASHHeader({ OpenSidebar }) {
             value={selectedLanguage}
             onChange={handleLanguageChange}
           >
-            <option value="en">English</option>
-            <option value="ar">Arabic</option>
+            <option value="en">{translations.english}</option>
+            <option value="ar">{translations.arabic}</option>
           </select>
         </div>
         <div class="theme-toggler" onClick={toggleTheme}>

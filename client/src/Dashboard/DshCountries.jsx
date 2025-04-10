@@ -72,6 +72,8 @@ function DshCountries() {
 
   // Delete Country
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(`${translations.deleteCountry}`);
+    if (!confirmDelete) return;
     try {
       const token = localStorage.getItem("token"); // Get token from storage
       await axios.delete(`${API_BASE_URL}/country/${id}`, {

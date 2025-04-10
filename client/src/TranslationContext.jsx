@@ -12,8 +12,14 @@ const translations = {
     products: "Products",
     about: "About",
     contact: "Contact Us",
+    loginTitle: "Welcome back to LAMSA",
+    registerTitle: "Welcome to LAMSA",
     login: "Login",
     register: "Register",
+    noacc: "Don't have an acoount",
+    haveacc: "Already have an account",
+    forgotpass: "Forgot password?",
+
     //home
     brief:
       "Your ultimate destination for exquisite paintings, featuring timeless classics and modern masterpieces for every art enthusiast",
@@ -187,8 +193,14 @@ const translations = {
     products: "منتجاتنا",
     about: "معلومات عنا",
     contact: "تواصل معنا",
+    loginTitle: "مرحبًا بك مجددًا في لمسة",
+    registerTitle: "مرحبًا بك في لمسة",
     login: "تسجيل الدخول",
     register: "التسجيل",
+    noacc: "ليس لديك حساب؟",
+    haveacc: "لديك حساب بالفعل؟",
+    forgotpass: "هل نسيت كلمة السر؟",
+
     //home
     brief:
       "وجهتك المثالية للوحات الفنية الرائعة، والتي تضم أعمالاً كلاسيكية خالدة وروائع فنية حديثة تناسب كل عشاق الفن",

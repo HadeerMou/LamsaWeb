@@ -4,7 +4,8 @@ import DASHHeader from "./DashboardComponents/dashHeader";
 import DashSidebar from "./DashboardComponents/dashSidebar";
 import { useTranslation } from "../TranslationContext";
 import axios from "axios";
-import { useCurrency } from "../CurrencyContext";
+/* import { calculateTotalPrice, convertAmount } from "../Utils/CartUtils";
+ */ import { useCurrency } from "../CurrencyContext";
 
 function DshOrders() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -48,7 +49,10 @@ function DshOrders() {
       console.log("Orders Data:", response.data); // Check API response
 
       if (response.data && response.data) {
-        setOrders(response.data); // Ensure correct data is set
+        const validOrders = response.data.filter(
+          (order) => users[order.userId]
+        );
+        setOrders(validOrders); // Ensure correct data is set
       } else {
         console.log("No orders found in response");
       }
@@ -78,7 +82,9 @@ function DshOrders() {
       // Convert array into object for quick lookup
       const usersMap = {};
       response.data.data.forEach((user) => {
-        usersMap[user.id] = user;
+        if (!user.deletedAt) {
+          usersMap[user.id] = user;
+        }
       });
 
       setUsers(usersMap);
@@ -96,27 +102,33 @@ function DshOrders() {
         headers: { Authorization: `Bearer ${token}` }, // Include token in request
       });
 
-      console.log("Fetched Products:", response.data); // Debugging
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
-      setProducts([]); // Fallback to prevent undefined errors
+      setProducts([]);
     }
   };
-
   useEffect(() => {
-    fetchOrders();
     fetchUsers();
-    fetchProducts();
   }, []);
+  useEffect(() => {
+    if (Object.keys(users).length > 0) {
+      fetchOrders();
+      fetchProducts();
+    }
+  }, [users]);
 
   const getProductInfo = (productId) => {
     return products.find((product) => product.id === productId) || {};
   };
-  const totalPrice = orders.reduce((acc, order) => {
-    return (
-      acc + calculateTotalPrice(order.orderItems, getProductInfo, convertAmount)
-    );
+  const totalPrice = filteredOrders.reduce((acc, order) => {
+    const orderTotal = order.orderItems.reduce((orderAcc, item) => {
+      const product = getProductInfo(item.productId);
+      if (!product || !product.price) return orderAcc; // Skip if product data is missing
+      const convertedPrice = convertAmount(product.price, selectedCurrency);
+      return orderAcc + convertedPrice * item.quantity;
+    }, 0);
+    return acc + orderTotal;
   }, 0);
 
   const updateOrderStatus = async (orderId, newStatus) => {
@@ -276,7 +288,9 @@ function DshOrders() {
                         <div className="info">
                           <div className="left">
                             <h3>{user.username || "Unknown User"}</h3>
-                            <p className="order">Order no #{order.id}</p>
+                            <p className="order">
+                              {translations.orderno}#{order.id}
+                            </p>
                           </div>
                           <div className="right">
                             <p className="new">
@@ -325,29 +339,36 @@ function DshOrders() {
                         })}
                         <div className="total">
                           <hr />
-                          <h3 className="totalpayment">Total price</h3>
+                          <h3 className="totalpayment">
+                            {translations.totalPrice}
+                          </h3>
                           <h3>
                             {" "}
-                            {selectedCurrency === "egp" ? "£" : "$"}
-                            {parseInt(totalPrice)}
-                            EGP
+                            {selectedCurrency === "egp"
+                              ? `${translations.egp}`
+                              : "$"}
+                            {parseInt(
+                              order.orderItems.reduce((orderTotal, item) => {
+                                const product = getProductInfo(item.productId);
+                                if (!product || !product.price)
+                                  return orderTotal; // Skip missing products
+                                const convertedPrice = convertAmount(
+                                  product.price,
+                                  selectedCurrency
+                                );
+                                return (
+                                  orderTotal + convertedPrice * item.quantity
+                                );
+                              }, 0)
+                            )}
                           </h3>
                         </div>
                         <div className="button">
                           <button
-                            className="orderdetail"
-                            onClick={() =>
-                              updateOrderStatus(order.id, "received")
-                            }
-                          >
-                            Update Status
-                          </button>
-                          <hr />
-                          <button
                             className="confirmOrder"
                             onClick={() => confirmOrder(order.id)}
                           >
-                            Confirm Order
+                            {translations.confirmOrd}
                           </button>
                         </div>
                       </div>
@@ -359,7 +380,7 @@ function DshOrders() {
               </div>
             </div>
             <button className="showall" onClick={fetchOrders}>
-              Show all
+              {translations.showall}
             </button>
           </main>
         </div>

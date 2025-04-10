@@ -41,14 +41,18 @@ function DashHome() {
       });
 
       if (response.data) {
-        setOrders(response.data);
+        const filteredOrders = response.data.filter(
+          (order) => users[order.userId]
+        );
+
+        setOrders(filteredOrders);
 
         // Count order statuses
-        const totalOrders = response.data.length;
-        const deliveredOrders = response.data.filter(
+        const totalOrders = filteredOrders.length;
+        const deliveredOrders = filteredOrders.filter(
           (order) => order.status.toLowerCase() === "delivered"
         ).length;
-        const cancelledOrders = response.data.filter(
+        const cancelledOrders = filteredOrders.filter(
           (order) => order.status.toLowerCase() === "cancelled"
         ).length;
         const pendingOrders = totalOrders - (deliveredOrders + cancelledOrders);
@@ -76,7 +80,9 @@ function DashHome() {
 
       const usersMap = {};
       response.data.data.forEach((user) => {
-        usersMap[user.id] = user;
+        if (!user.DeletedAt) {
+          usersMap[user.id] = user;
+        }
       });
 
       setUsers(usersMap);
@@ -84,15 +90,17 @@ function DashHome() {
       console.error("Error fetching users:", error);
     }
   };
-
+  useEffect(() => {
+    fetchUsers();
+  }, []);
   useEffect(() => {
     fetchOrders();
-    fetchUsers();
     fetchProducts();
-  }, []);
+  }, [users]);
 
   // Get Recent Orders (Sort by Date & Take the Latest 5)
   const recentOrders = [...orders]
+    .filter((order) => users[order.userId])
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 5);
 
@@ -104,23 +112,33 @@ function DashHome() {
       return total + convertAmount(price * quantity);
     }, 0);
   };
-  const recentUpdates = recentOrders.map((order) => {
-    const user = users[order.userId] || { username: "Unknown" };
-    let message = "";
+  const recentUpdates = [...recentOrders]
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort by newest first
+    .slice(0, 6)
+    .map((order) => {
+      const user = users[order.userId] || { username: "Unknown" };
+      if (!user) return null;
+      let message = "";
 
-    if (order.status.toLowerCase() === "delivered") {
-      message = `${user.username} received their order successfully.`;
-    } else if (order.status.toLowerCase() === "cancelled") {
-      message = `${user.username} cancelled their order.`;
-    } else {
-      message = `${user.username} has a pending order.`;
-    }
+      if (order.status.toLowerCase() === "delivered") {
+        message = `${user.username} ${translations.receivedorder}`;
+      } else if (order.status.toLowerCase() === "cancelled") {
+        message = `${user.username} ${translations.cancelledorder}`;
+      } else {
+        message = `${user.username} ${translations.pendingorder}`;
+      }
 
-    return {
-      message,
-      time: "Just now", // Replace with actual time logic if needed
-    };
-  });
+      return {
+        message,
+        time: new Date(order.createdAt).toLocaleDateString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        }),
+      };
+    })
+    .filter((update) => update !== null);
 
   return (
     <>
@@ -136,7 +154,7 @@ function DashHome() {
                 <i class="fa-solid fa-chart-pie"></i>
                 <div class="middle">
                   <div class="left">
-                    <h3 className="totalsales">Total Orders</h3>
+                    <h3 className="totalsales">{translations.totalOrders}</h3>
                     <h5 className="price">{stats.total}</h5>
                   </div>
                   {/* <div class="progress">
@@ -156,7 +174,9 @@ function DashHome() {
                 <i class="fa-solid fa-chart-column"></i>
                 <div class="middle">
                   <div class="left">
-                    <h3 className="totalexpanses">Delivered Orders</h3>
+                    <h3 className="totalexpanses">
+                      {translations.deliveredorders}
+                    </h3>
                     <h5 className="price">{stats.delivered}</h5>
                   </div>
                   {/* <div class="progress">
@@ -176,7 +196,9 @@ function DashHome() {
                 <i class="fa-solid fa-chart-line"></i>
                 <div class="middle">
                   <div class="left">
-                    <h3 className="totalincome">Cancelled Orders</h3>
+                    <h3 className="totalincome">
+                      {translations.cancelledorders}
+                    </h3>
                     <h5 className="price">{stats.cancelled}</h5>
                   </div>
                   {/* <div class="progress">
@@ -197,11 +219,11 @@ function DashHome() {
             <table>
               <thead>
                 <tr>
-                  <th>Order ID</th>
-                  <th>Customer</th>
-                  <th>Date</th>
-                  <th>Total Price</th>
-                  <th>Status</th>
+                  <th>{translations.orderno}</th>
+                  <th>{translations.username}</th>
+                  <th>{translations.date}</th>
+                  <th>{translations.totalPrice}</th>
+                  <th>{translations.status}</th>
                 </tr>
               </thead>
               <tbody>
@@ -241,7 +263,9 @@ function DashHome() {
                           {formattedDate} {formattedTime}
                         </td>
                         <td>
-                          {selectedCurrency === "egp" ? "£" : "$"}
+                          {selectedCurrency === "egp"
+                            ? `${translations.egp}`
+                            : "$"}
                           {parseInt(totalPrice)}
                         </td>
                         <td className={`status ${order.status.toLowerCase()}`}>

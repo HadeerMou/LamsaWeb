@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./dshusers.css";
 import DASHHeader from "./DashboardComponents/dashHeader";
 import DashSidebar from "./DashboardComponents/dashSidebar";
@@ -7,7 +7,7 @@ import axios from "axios";
 
 function DshUsers() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
+  const editModalRef = useRef(null);
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
@@ -54,16 +54,6 @@ function DshUsers() {
     }
   };
 
-  // Fetch user by ID
-  const fetchUserById = async (id) => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/users/${id}`);
-      console.log(response.data); // Handle the fetched user data
-    } catch (error) {
-      console.error("Error fetching user by ID:", error);
-    }
-  };
-
   // Create a new user
   const handleCreateUser = async () => {
     try {
@@ -93,6 +83,8 @@ function DshUsers() {
 
   // Delete user
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(`${translations.deleteUser}`);
+    if (!confirmDelete) return;
     try {
       const token = localStorage.getItem("token"); // Get token from storage
       await axios.delete(`${API_BASE_URL}/users/${id}`, {
@@ -111,6 +103,9 @@ function DshUsers() {
   const handleEditClick = (user) => {
     setEditingUser(user);
     setUpdatedUser({ phone: user.phone });
+    setTimeout(() => {
+      editModalRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 200);
   };
 
   // Update user
@@ -176,7 +171,7 @@ function DshUsers() {
                           className="edit"
                           onClick={() => handleEditClick(user)}
                         >
-                          Edit
+                          {translations.edit}
                         </button>
                         <button
                           className="delete"
@@ -202,13 +197,15 @@ function DshUsers() {
             className="addprod"
             onClick={() => setShowCreateUser(!showCreateUser)}
           >
-            {showCreateUser ? "Close" : "Create User"}
+            {showCreateUser
+              ? `${translations.close}`
+              : `${translations.createUser}`}
           </button>
 
           {/* Create User Form */}
           {showCreateUser && (
             <div className="create-user-form">
-              <h3>Create New User</h3>
+              <h3>{translations.createnewuser}</h3>
               <input
                 type="text"
                 placeholder="Username"
@@ -241,14 +238,16 @@ function DshUsers() {
                   setNewUser({ ...newUser, phone: e.target.value })
                 }
               />
-              <button onClick={handleCreateUser}>Create User</button>
+              <button onClick={handleCreateUser}>
+                {translations.createUser}
+              </button>
             </div>
           )}
 
           {/* Edit User Modal */}
           {editingUser && (
-            <div className="edit-user-modal">
-              <h3>Edit User</h3>
+            <div ref={editModalRef} className="edit-user-modal">
+              <h3>{translations.editUser}</h3>
               <input
                 type="text"
                 placeholder="Phone"
@@ -257,8 +256,12 @@ function DshUsers() {
                   setUpdatedUser({ ...updatedUser, phone: e.target.value })
                 }
               />
-              <button onClick={handleUpdate}>Update</button>
-              <button onClick={() => setEditingUser(null)}>Cancel</button>
+              <button className="addprod" onClick={handleUpdate}>
+                {translations.update}
+              </button>
+              <button className="addprod" onClick={() => setEditingUser(null)}>
+                {translations.cancel}
+              </button>
             </div>
           )}
         </main>
