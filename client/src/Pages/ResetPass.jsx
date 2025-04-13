@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import logo from "../logo.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from "../TranslationContext";
 
 function ResetPass() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
+  const { translations } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [password, setPassword] = useState("");
@@ -80,50 +81,50 @@ function ResetPass() {
           />
         </div>
         <div className="flex flex-col items-center justify-center w-1/2 h-200 !p-20 rounded-lg">
-          <h1 className="text-3xl font-bold !mb-4">Reset Password</h1>
-          <p className="text-lg !mb-10">
-            Please enter a new password to update your password
-          </p>
+          <h1 className="text-3xl font-bold !mb-4">{translations.resetpass}</h1>
+          <p className="text-lg !mb-10">{translations.enternewpass}</p>
           <div className="w-full">
             <input
               className="input bg-transparent !border !border-black/50 rounded-md !mb-7 !p-3 w-full"
               type="password"
               name="password"
-              placeholder="New Password"
+              placeholder={translations.newpass}
             />
             <input
               className="input bg-transparent !border !border-black/50 rounded-md !mb-7 !p-3 w-full"
               type="password"
               name="password"
-              placeholder="Confirm New Password"
+              placeholder={translations.confirmpass}
             />
             <button className="!bg-red-700 text-white font-bold !py-3 rounded-lg w-full cursor-pointer">
-              Reset Password
+              {translations.resetpass}
             </button>
           </div>
         </div>
       </div>
       {/* Mobile Design*/}
       <div className="relative !mt-auto bg-white rounded-t-4xl shadow-lg !px-10 !py-20 sm:p-10! !w-full !mx-auto lg:hidden">
-        <h1 className="text-center text-2xl font-bold !mb-3">Reset Password</h1>
+        <h1 className="text-center text-2xl font-bold !mb-3">
+          {translations.resetpass}
+        </h1>
         <p className="text-center !text-md !mb-8">
-          Please enter a new password to update your password
+          {translations.enternewpass}
         </p>
         <div>
           <input
             className="input bg-transparent !border !border-black/50 rounded-md !mb-7 !p-3 w-full"
             type="password"
             name="password"
-            placeholder="New Password"
+            placeholder={translations.newpass}
           />
           <input
             className="input bg-transparent !border !border-black/50 rounded-md !mb-7 !p-3 w-full"
             type="password"
             name="password"
-            placeholder="Confirm New Password"
+            placeholder={translations.confirmpass}
           />
           <button className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full">
-            Reset Password
+            {translations.resetpass}
           </button>
         </div>
       </div>

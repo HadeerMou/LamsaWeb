@@ -3,10 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../Components/header";
 import { IoCartOutline } from "react-icons/io5";
+import { useTranslation } from "../TranslationContext";
 
 export default function Checkout({ toggleCartVisibility, totalQuantity }) {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
+  const { translations } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const { cart, totalPrice } = location.state || { cart: [], totalPrice: 0 };
@@ -184,14 +185,16 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
       />
       <div className="lg:p-8! !p-4">
         <h2 className="font-bold text-md! sm:text-lg! md:text-xl! lg:text-3xl! !p-2 lg:p-5! !mb-4">
-          Checkout
+          {translations.checkout}
         </h2>
         <div className="lg:flex">
           <div className="lg:p-5! lg:w-2/3">
             <div className="flex flex-col lg:gap-10">
               <div className="lg:flex gap-5">
                 <div className="flex flex-col">
-                  <label className="!p-2 !mb-1 font-bold">Full Name</label>
+                  <label className="!p-2 !mb-1 font-bold">
+                    {translations.fullname}
+                  </label>
                   <input
                     type="text"
                     name="firstname"
@@ -203,7 +206,9 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="!p-2 !mb-1 font-bold">Email</label>
+                  <label className="!p-2 !mb-1 font-bold">
+                    {translations.email}
+                  </label>
                   <input
                     type="text"
                     name="email"
@@ -217,7 +222,9 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
               </div>
               <div className="lg:flex gap-5">
                 <div className="flex flex-col">
-                  <label className="!p-2 !mb-1 font-bold">Address</label>
+                  <label className="!p-2 !mb-1 font-bold">
+                    {translations.address}
+                  </label>
                   <input
                     type="text"
                     name="address"
@@ -229,7 +236,9 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="!p-2 !mb-1 font-bold">Building no</label>
+                  <label className="!p-2 !mb-1 font-bold">
+                    {translations.buildingno}
+                  </label>
                   <input
                     type="text"
                     name="bulding"
@@ -241,7 +250,9 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="!p-2 !mb-1 font-bold">Apartment no</label>
+                  <label className="!p-2 !mb-1 font-bold">
+                    {translations.apartmentno}
+                  </label>
                   <input
                     type="text"
                     name="apartment"
@@ -255,7 +266,9 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
               </div>
               <div className="lg:flex gap-5">
                 <div className="flex flex-col">
-                  <label className="!p-2 !mb-1 font-bold">Country</label>
+                  <label className="!p-2 !mb-1 font-bold">
+                    {translations.country}
+                  </label>
                   <input
                     type="text"
                     name="city"
@@ -267,7 +280,9 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="!p-2 !mb-1 font-bold">City</label>
+                  <label className="!p-2 !mb-1 font-bold">
+                    {translations.city}
+                  </label>
                   <input
                     type="text"
                     name="city"
@@ -279,7 +294,9 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="!p-2 !mb-1 font-bold">District</label>
+                  <label className="!p-2 !mb-1 font-bold">
+                    {translations.district}
+                  </label>
                   <input
                     type="text"
                     name="state"
@@ -295,7 +312,9 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
           </div>
           <div className="flex flex-col !p-4 gap-3 lg:w-1/3">
             <div className="flex justify-between items-center">
-              <h4 className="font-bold text-sm! lg:text-lg!">Order Summary</h4>
+              <h4 className="font-bold text-sm! lg:text-lg!">
+                {translations.ordersummary}
+              </h4>
               <h4>
                 <span className="flex items-center gap-1 text-sm! lg:text-lg!">
                   <IoCartOutline />
@@ -308,20 +327,20 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
               <p className="prodOrd" key={item.productId}>
                 <img src={item.image} alt={item.name} />{" "}
                 <span className="price">
-                  {item.name} x {item.quantity} - ${item.price * item.quantity}
+                  {item.name} x {item.quantity} - {item.price * item.quantity}
                 </span>
               </p>
             ))}
 
             <hr className="solid min-h-0.5 bg-black/50" />
             <div className="flex justify-between items-center !mt-1">
-              <p className="">Subtotal</p>
+              <p className="">{translations.subtotal}</p>
               <span className="price">
                 <b>${totalPrice.toFixed(2)}</b>
               </span>
             </div>
             <div className="flex justify-between items-center !my-1">
-              <p className="">Shipping</p>
+              <p className="">{translations.shipping}</p>
               <span className="price">
                 <b>${totalPrice.toFixed(2)}</b>
               </span>
@@ -329,7 +348,7 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
             <hr className="solid min-h-0.5 bg-black/20" />
 
             <div className="flex justify-between items-center">
-              <p className="text-black/80! text-lg">Total</p>
+              <p className="text-black/80! text-lg">{translations.total}</p>
               <span className="price text-lg">
                 <b>${totalPrice.toFixed(2)}</b>
               </span>
@@ -339,7 +358,7 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
               className="!py-3 w-full !mt-8 bg-red-300! rounded-md text-white hover:bg-red-500!"
               onClick={handleSubmit}
             >
-              Checkout
+              {translations.checkout}
             </button>
           </div>
         </div>

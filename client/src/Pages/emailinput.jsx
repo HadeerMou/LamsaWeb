@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from "../TranslationContext";
 
 function EmailInput() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
+  const { translations } = useTranslation(); // Assuming you have a translation context
   const navigate = useNavigate();
   const location = useLocation(); // Get the current URL
   const [input, setInput] = useState("");
@@ -87,13 +88,13 @@ function EmailInput() {
           />
         </div>
         <div className="flex flex-col items-center justify-center w-1/2 h-200 !p-20 rounded-lg">
-          <h1 className="text-3xl font-bold !mb-4">Email verification</h1>
-          <p className="text-lg !mb-10">
-            Please enter your email to receive code
-          </p>
+          <h1 className="text-3xl font-bold !mb-4">
+            {translations.emailverify}
+          </h1>
+          <p className="text-lg !mb-10">{translations.enteremail} </p>
           <div className="w-full">
             <label className="block font-bold !mb-2" htmlFor="email">
-              Email
+              {translations.email}
             </label>
             <input
               className="input bg-transparent !border !border-black/50 rounded-md !mb-5 !p-3 w-full"
@@ -106,7 +107,7 @@ function EmailInput() {
               onClick={handleInput}
               className="!bg-red-700 text-white font-bold !py-3 rounded-lg w-full cursor-pointer"
             >
-              Send code
+              {translations.sendcode}
             </button>
           </div>
         </div>
@@ -114,14 +115,12 @@ function EmailInput() {
       {/* Mobile Design*/}
       <div className="relative !mt-auto bg-white rounded-t-4xl shadow-lg !px-10 !py-20 sm:p-10! !w-full !mx-auto lg:hidden">
         <h1 className="text-center text-2xl font-bold !mb-3">
-          Email verification
+          {translations.emailverify}
         </h1>
-        <p className="text-center !text-md !mb-8">
-          Please enter your email to receive code
-        </p>
+        <p className="text-center !text-md !mb-8">{translations.enteremail} </p>
         <div>
           <label className="block font-bold !mb-2" htmlFor="email">
-            Email
+            {translations.email}
           </label>
           <input
             className="bg-transparent !border !border-black/50 rounded-md !mb-7 !p-3 w-full"
@@ -134,7 +133,7 @@ function EmailInput() {
             onClick={handleInput}
             className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full"
           >
-            Send code
+            {translations.sendcode}
           </button>
         </div>
       </div>

@@ -97,7 +97,7 @@ function Header({ toggleCartVisibility, totalQuantity }) {
               {" "}
               {isLoggedIn ? (
                 <button
-                  className="text-gray-600 hover:text-gray-800"
+                  className="text-white bg-red-600! !px-5 !py-2 rounded-md hover:bg-red-700! cursor-pointer"
                   onClick={handleLogout}
                 >
                   {translations.logout}
@@ -106,13 +106,13 @@ function Header({ toggleCartVisibility, totalQuantity }) {
                 <>
                   <Link
                     to="/login"
-                    className="bg-red-300 text-white !px-5 !py-2 rounded-md hover:bg-red-700"
+                    className="bg-red-300 text-white !px-5 !py-2 rounded-md hover:bg-red-700 cursor-pointer"
                   >
                     {translations.login}
                   </Link>
                   <Link
                     to="/signup"
-                    className="bg-gray-100 text-gray-700 !px-5 !py-2 rounded-md hover:bg-gray-300"
+                    className="bg-gray-100 text-gray-700 !px-5 !py-2 rounded-md hover:bg-gray-300 cursor-pointer"
                   >
                     {translations.register}
                   </Link>
@@ -185,7 +185,7 @@ function Header({ toggleCartVisibility, totalQuantity }) {
           {/* Mobile Login/Register or Logout */}
           {isLoggedIn ? (
             <button
-              className="text-gray-600 hover:text-gray-800"
+              className="text-white bg-red-600! !px-4 !py-1 rounded-md hover:bg-red-700!"
               onClick={() => {
                 handleLogout();
                 setOpen(false);

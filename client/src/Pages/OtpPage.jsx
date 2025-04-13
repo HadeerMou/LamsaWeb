@@ -2,15 +2,15 @@ import React, { useRef, useState } from "react";
 import logo from "../logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from "../TranslationContext";
 
 function OtpPage() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
+  const { translations } = useTranslation();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const email = searchParams.get("input");
   const from = searchParams.get("from"); // Capture source (verification or forgot-password)
-
   const navigate = useNavigate();
   const [otp, setOtp] = useState(new Array(6).fill("")); // Store OTP as an array
   const inputsRef = useRef(new Array(6).fill(null));
@@ -93,10 +93,10 @@ function OtpPage() {
         </div>
         <div className="flex flex-col items-center justify-center w-1/2 h-200 !p-20 rounded-lg">
           <h1 className="text-3xl font-bold !mb-4">
-            Verify your Email Address
+            {translations.verifycode}
           </h1>
           <p className="text-lg !mb-10">
-            Please Enter the 6-digit code we sent to {email}
+            {translations.enter6digit} {email}
           </p>
           <div className="w-full">
             <div className="flex items-center w-3/4 gap-4 !pb-3 !my-3 !mx-auto">
@@ -117,10 +117,10 @@ function OtpPage() {
               ))}
             </div>
             <Link className="block text-sm text-center !text-black/50 !underline !mb-3">
-              Send Again
+              {translations.sendagain}
             </Link>
             <button className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full">
-              Continue
+              {translations.continue}
             </button>
           </div>
         </div>
@@ -128,10 +128,10 @@ function OtpPage() {
       {/* Mobile Design*/}
       <div className="relative !mt-auto bg-white rounded-t-4xl shadow-lg !px-6 !py-20 sm:p-10! !w-full !mx-auto lg:hidden">
         <h1 className="text-center text-2xl font-bold !mb-3">
-          Verify your Email Address
+          {translations.verifycode}
         </h1>
         <p className="text-center text-md !mb-6">
-          Please Enter the 6-digit code we sent to {email}
+          {translations.enter6digit} {email}
         </p>
         <div className="flex items-center gap-3 !my-3 !mx-auto">
           {otp.map((digit, index) => (
@@ -151,10 +151,10 @@ function OtpPage() {
           ))}
         </div>
         <Link className="block text-sm text-center !text-black/50 !underline !mb-3">
-          Send Again
+          {translations.sendagain}
         </Link>
         <button className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full">
-          Continue
+          {translations.continue}
         </button>
       </div>
     </div>

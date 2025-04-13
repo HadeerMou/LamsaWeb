@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "../TranslationContext";
 
 export default function Address({ addressId }) {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
+  const { translations } = useTranslation();
   const [addresses, setAddresses] = useState([]);
   const [newAddress, setNewAddress] = useState({
     streetName: "",
@@ -16,11 +17,9 @@ export default function Address({ addressId }) {
     isDefault: false,
   });
   const navigate = useNavigate();
-
   const [cities, setCities] = useState([]);
   const [countries, setCountries] = useState([]);
   const [districts, setDistricts] = useState([]);
-
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -232,15 +231,15 @@ export default function Address({ addressId }) {
 
   return (
     <div className="checkout-container">
-      <h2 className="title">Address</h2>
+      <h2 className="title">{translations.address}</h2>
       <div className="checkrow">
         <div className="col-75">
           <div className="checkcontainer">
             <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-50">
-                  <h3>Address</h3>
-                  <label>Street Name</label>
+                  <h3>{translations.address}</h3>
+                  <label>{translations.streetname}</label>
                   <input
                     type="text"
                     name="streetName"
@@ -251,14 +250,14 @@ export default function Address({ addressId }) {
                   />
                   <div className="row">
                     <div className="col-25">
-                      <label>City Id</label>
+                      <label>{translations.city}</label>
                       <select
                         name="cityId"
                         value={newAddress.cityId}
                         onChange={handleChange}
                         required
                       >
-                        <option value="">Select City</option>
+                        <option value="">{translations.selectcity}</option>
                         {cities.map((city) => (
                           <option key={city.id} value={city.id}>
                             {city.name}
@@ -267,14 +266,14 @@ export default function Address({ addressId }) {
                       </select>
                     </div>
                     <div className="col-25">
-                      <label>Country Id</label>
+                      <label>{translations.country}</label>
                       <select
                         name="countryId"
                         value={newAddress.countryId}
                         onChange={handleChange}
                         required
                       >
-                        <option value="">Select Country</option>
+                        <option value="">{translations.selectcountry}</option>
                         {countries.map((country) => (
                           <option key={country.id} value={country.id}>
                             {country.name}
@@ -283,14 +282,14 @@ export default function Address({ addressId }) {
                       </select>
                     </div>
                     <div className="col-25">
-                      <label>District Id</label>
+                      <label>{translations.district}</label>
                       <select
                         name="districtId"
                         value={newAddress.districtId}
                         onChange={handleChange}
                         required
                       >
-                        <option value="">Select District</option>
+                        <option value="">{translations.selectdistrict}</option>
                         {districts.map((district) => (
                           <option
                             key={district.district_id}
@@ -303,7 +302,7 @@ export default function Address({ addressId }) {
                     </div>
                     <div className="row">
                       <div className="col-50">
-                        <label>Apartment No</label>
+                        <label>{translations.apartmentno}</label>
                         <input
                           type="text"
                           name="apartmentNumber"
@@ -314,7 +313,7 @@ export default function Address({ addressId }) {
                         />
                       </div>
                       <div className="col-50">
-                        <label>Building No</label>
+                        <label>{translations.buildingno}</label>
                         <input
                           type="text"
                           name="buildingNumber"
@@ -328,7 +327,9 @@ export default function Address({ addressId }) {
                   </div>
                 </div>
                 <button type="submit">
-                  {isEditing ? "Update Address" : "Create Address"}
+                  {isEditing
+                    ? `${translations.editaddress}`
+                    : `${translations.addnewaddress}`}
                 </button>
               </div>
               <label>
@@ -337,7 +338,7 @@ export default function Address({ addressId }) {
                   name="isDefault"
                   checked={newAddress.isDefault}
                 />{" "}
-                Set as default address
+                {translations.setdefault}
               </label>
             </form>
           </div>
