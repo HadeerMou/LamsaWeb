@@ -13,7 +13,7 @@ export class loginDto {
     description: 'User password',
     example: 'StrongP@ss123',
     required: true,
-    minLength: 8,
+    minLength: 6,
   })
   password: string;
 }

@@ -123,6 +123,7 @@ model Products {
   descriptionAr String?
   price         Decimal         @db.Decimal(10, 2)
   quantity      Int
+  color         String?
   categoryId    Int
   status        productStatus   @default(ACTIVE)
   createdAt     DateTime        @default(now())
