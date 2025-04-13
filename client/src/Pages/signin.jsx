@@ -10,7 +10,6 @@ function Signin({ userType }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { translations } = useTranslation();
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(""); // Reset errors
