@@ -1,23 +1,11 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import {
-  BsFillBellFill,
-  BsFillEnvelopeFill,
-  BsPersonCircle,
-  BsSearch,
-  BsJustify,
-} from "react-icons/bs";
+import { BsJustify } from "react-icons/bs";
 import { useTranslation } from "../../TranslationContext";
-import { useCurrency } from "../../CurrencyContext";
 
 function DASHHeader({ OpenSidebar }) {
   const { translations, changeLanguage } = useTranslation(); // Using translation context
   const [selectedLanguage, setSelectedLanguage] = useState("en"); // Default language is English
-  const { selectedCurrency, changeCurrency } = useCurrency(); // Using currency context
-  const handleCurrencyChange = (event) => {
-    const newCurrency = event.target.value;
-    changeCurrency(newCurrency); // Update Currency in context
-  };
 
   useEffect(() => {
     setSelectedLanguage(localStorage.getItem("language") || "en");
@@ -52,47 +40,42 @@ function DASHHeader({ OpenSidebar }) {
     }
   };
   return (
-    <header className="header">
-      <div className="menu-icon">
-        <BsJustify className="icon" onClick={OpenSidebar} />
-      </div>
-      <div className="header-left">
-        <div class="admin">
-          <div class="admin-name">
-            <p>
-              Hey, <b>Admin</b>
-            </p>
-            <small>Admin</small>
-          </div>
+    <header className="flex items-center justify-between bg-white shadow lg:px-6! lg:py-4! py-2! px-3! w-full">
+      <div className="flex items-center space-x-4!">
+        <BsJustify
+          className="text-2xl cursor-pointer lg:hidden"
+          onClick={OpenSidebar}
+        />
+        <div>
+          <p className="text-gray-700">
+            Hey, <b>Admin</b>
+          </p>
+          <small className="text-gray-500">Admin</small>
         </div>
       </div>
-      <div className="header-right">
-        <div className="curr">
-          <select
-            name="curr"
-            id="sel"
-            value={selectedCurrency}
-            onChange={handleCurrencyChange}
-          >
-            <option value="egp">{translations.egp}</option>
-            <option value="dollar">{translations.dollar}</option>
-          </select>
-        </div>
-        <div className="lang">
-          <select
-            name="language"
-            id="sel"
-            value={selectedLanguage}
-            onChange={handleLanguageChange}
-          >
-            <option value="en">{translations.english}</option>
-            <option value="ar">{translations.arabic}</option>
-          </select>
-        </div>
-        <div class="theme-toggler" onClick={toggleTheme}>
-          <i class="fa-solid fa-sun active"></i>
-          <i class="fa-solid fa-moon"></i>
-        </div>
+      <div className="flex items-center space-x-6!">
+        {/* Language Selector */}
+        <select
+          name="language"
+          value={selectedLanguage}
+          onChange={handleLanguageChange}
+          className="border! border-gray-300! rounded-md! px-3! py-1! text-gray-700!"
+        >
+          <option value="en">{translations.english}</option>
+          <option value="ar">{translations.arabic}</option>
+        </select>
+
+        {/* Theme Toggler */}
+        <button
+          onClick={toggleTheme}
+          className="flex items-center space-x-2! text-gray-700!"
+        >
+          <i
+            className={`fa-solid ${
+              isDarkMode ? "fa-moon text-gray-900!" : "fa-sun text-yellow-500!"
+            }`}
+          ></i>
+        </button>
       </div>
     </header>
   );

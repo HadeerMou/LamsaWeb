@@ -26,13 +26,10 @@ function Signin({ userType }) {
           },
         }
       );
-
       const token = response.data.data.accessToken;
-
       // Save token in localStorage
       localStorage.setItem("token", response.data.data.accessToken);
       localStorage.setItem("userType", userType);
-
       // Fetch user profile to get the user ID
       if (userType !== "ADMIN") {
         const profileResponse = await axios.get(
@@ -43,7 +40,6 @@ function Signin({ userType }) {
             },
           }
         );
-
         const userId = profileResponse.data.data.id;
         localStorage.setItem("userId", userId); // Store user ID
       }
@@ -71,7 +67,7 @@ function Signin({ userType }) {
   };
 
   return (
-    <div className="relative flex flex-col min-h-screen">
+    <div className="relative flex flex-col h-screen">
       {/* Mobile Design: Background Image */}
       <div className="absolute !top-0 left-0 w-full !h-1/2 sm:h-1/2 lg:hidden">
         <img

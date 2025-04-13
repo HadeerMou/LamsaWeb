@@ -1,7 +1,7 @@
 import React from "react";
-import logo from "../../logo.png";
 import { useTranslation } from "../../TranslationContext";
 import { useNavigate } from "react-router-dom";
+import { BsJustify } from "react-icons/bs";
 
 function DashSidebar({ openSidebarToggle, OpenSidebar }) {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -10,163 +10,104 @@ function DashSidebar({ openSidebarToggle, OpenSidebar }) {
   const navigate = useNavigate();
   return (
     <aside
-      id="sidebar"
-      className={openSidebarToggle ? "sidebar-responsive" : ""}
+      className={`fixed top-0 left-0 h-full bg-white shadow-lg transition-transform transform ${
+        openSidebarToggle ? "translate-x-0" : "-translate-x-full"
+      } lg:translate-x-0 lg:static lg:w-64`}
     >
-      <div className="sidebar-top">
+      <div className="flex items-center justify-between !p-4 border-b">
+        <div className="flex items-center space-x-2">
+          <BsJustify
+            className="text-2xl cursor-pointer lg:hidden"
+            onClick={OpenSidebar}
+          />{" "}
+        </div>
         <div className="sidebar-brand">
-          <img
+          {/* <img
             onClick={() => navigate("/")}
             className="logo"
             src={logo}
             alt=""
-          />
+          /> */}
         </div>
-        <div className="sidebar-title">
+        <div className="text-xl font-bold text-gray-800">
           <h2>
-            CHAR<span class="warning">MI</span>
+            LAM<span class="text-red-300">SA</span>
           </h2>
-        </div>
-        <div className="span">
-          <span className="icon close_icon" onClick={OpenSidebar}>
-            X
-          </span>
         </div>
       </div>
 
-      <ul className="sidebar-list">
-        <li className="sidebar-list-item">
-          <a class="option" id="op1" onClick={() => navigate("/dashboard")}>
-            <span>
-              <i class="fa-solid fa-border-all"></i>
-            </span>
-            <h3 className="dashboardname">{translations.dashboardname}</h3>
-          </a>
-        </li>
-        <li className="sidebar-list-item">
-          <a
-            class="option"
-            id="op1"
-            onClick={() => navigate("/dashboard/users")}
-          >
-            <span>
-              <i class="fa-regular fa-user"></i>
-            </span>
-            <h3 className="customersname">{translations.customersname}</h3>
-          </a>
-        </li>
-        <li
-          className="sidebar-list-item"
+      <ul className="mt-6! space-y-4!">
+        <SidebarItem
+          icon="fa-solid fa-border-all"
+          label={translations.dashboardname}
+          onClick={() => navigate("/dashboard")}
+        />
+        <SidebarItem
+          icon="fa-regular fa-user"
+          label={translations.customersname}
+          onClick={() => navigate("/dashboard/users")}
+        />
+        <SidebarItem
+          icon="fa-solid fa-money-check-dollar"
+          label={translations.ordersname}
           onClick={() => navigate("/dashboard/orders")}
-        >
-          <a class="option" id="op1">
-            <span>
-              <i class="fa-solid fa-money-check-dollar"></i>
-            </span>
-            <h3 className="ordersname">{translations.ordersname}</h3>
-          </a>
-        </li>
-        <li className="sidebar-list-item">
-          <a class="option" id="op1">
-            <span>
-              <i class="fa-solid fa-globe"></i>
-            </span>
-            <h3 className="" onClick={() => navigate("/dashboard/countries")}>
-              {translations.countries}
-            </h3>
-          </a>
-        </li>
-
-        <li className="sidebar-list-item">
-          <a class="option" id="op1">
-            <span>
-              <i class="fa-solid fa-city"></i>
-            </span>
-            <h3 className="" onClick={() => navigate("/dashboard/cities")}>
-              {translations.cities}
-            </h3>
-          </a>
-        </li>
-        {/* <li className="sidebar-list-item">
-          <a
-            class="option"
-            id="op1"
-            onClick={() => navigate("/dashboard/messages")}
-          >
-            <span>
-              <i class="fa-regular fa-envelope"></i>
-            </span>
-            <h3 className="messagesname">{translations.messagesname}</h3>
-            <span class="message-count">20</span>
-          </a>
-        </li> */}
-        <li className="sidebar-list-item">
-          <a
-            class="option"
-            id="op1"
-            onClick={() => navigate("/dashboard/products")}
-          >
-            <span>
-              <i class="fa-solid fa-bag-shopping"></i>
-            </span>
-            <h3 className="productsname">{translations.productsname}</h3>
-          </a>
-        </li>
-        <li className="sidebar-list-item">
-          <a
-            class="option"
-            id="op1"
-            onClick={() => navigate("/dashboard/categories")}
-          >
-            <span>
-              <i class="fa-solid fa-store"></i>
-            </span>
-            <h3 className="productsname">{translations.categories}</h3>
-          </a>
-        </li>
-        <li className="sidebar-list-item">
-          <a class="option" id="op1">
-            <span>
-              <i class="fa-solid fa-dollar-sign"></i>
-            </span>
-            <h3
-              className=""
-              onClick={() => navigate("/dashboard/shippingfees")}
-            >
-              {translations.shippingfees}
-            </h3>
-          </a>
-        </li>
-        <li className="sidebar-list-item">
-          <a
-            class="option"
-            id="op1"
-            onClick={() => navigate("/dashboard/admins")}
-          >
-            <span>
-              <i class="fa-solid fa-lock"></i>
-            </span>
-            <h3 className="adminname">{translations.adminname}</h3>
-          </a>
-        </li>
-        <li className="sidebar-list-item">
-          <a
-            class="option"
-            onClick={() => {
-              localStorage.removeItem("token"); // Remove the authentication token
-              localStorage.removeItem("userType"); // Remove user type
-              localStorage.removeItem("userId"); // Remove user ID if stored
-              navigate("/admin-login"); // Redirect to sign-in page
-            }}
-          >
-            <span>
-              <i class="fa-solid fa-right-from-bracket"></i>
-            </span>
-            <h3 className="logoutname">{translations.logoutname}</h3>
-          </a>
-        </li>
+        />
+        <SidebarItem
+          icon="fa-solid fa-globe"
+          label={translations.countries}
+          onClick={() => navigate("/dashboard/countries")}
+        />
+        <SidebarItem
+          icon="fa-solid fa-city"
+          label={translations.cities}
+          onClick={() => navigate("/dashboard/cities")}
+        />
+        <SidebarItem
+          icon="fa-solid fa-bag-shopping"
+          label={translations.productsname}
+          onClick={() => navigate("/dashboard/products")}
+        />
+        <SidebarItem
+          icon="fa-solid fa-store"
+          label={translations.categories}
+          onClick={() => navigate("/dashboard/categories")}
+        />
+        <SidebarItem
+          icon="fa-solid fa-dollar-sign"
+          label={translations.shippingfees}
+          onClick={() => navigate("/dashboard/shippingfees")}
+        />
+        <SidebarItem
+          icon="fa-solid fa-lock"
+          label={translations.adminname}
+          onClick={() => navigate("/dashboard/admins")}
+        />
+        <SidebarItem
+          icon="fa-solid fa-right-from-bracket"
+          label={translations.logoutname}
+          onClick={() => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userType");
+            localStorage.removeItem("userId");
+            navigate("/admin-login");
+          }}
+        />
       </ul>
     </aside>
+  );
+}
+
+function SidebarItem({ icon, label, onClick }) {
+  return (
+    <li>
+      <button
+        onClick={onClick}
+        className="flex items-center w-full px-4! py-2! text-gray-700! hover:bg-red-100! transition-colors! cursor-pointer"
+      >
+        <i className={`${icon} mr-3!`}></i>
+        <span>{label}</span>
+      </button>
+    </li>
   );
 }
 

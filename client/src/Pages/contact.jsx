@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../Components/footer";
 import Header from "../Components/header";
 import { useTranslation } from "../TranslationContext";
@@ -6,6 +6,7 @@ import { GiStarShuriken } from "react-icons/gi";
 
 export default function Contact({ toggleCartVisibility, cart, totalQuantity }) {
   const { translations } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -36,28 +37,37 @@ export default function Contact({ toggleCartVisibility, cart, totalQuantity }) {
             <h2 className="flex text-4xl lg:text-6xl!">commit</h2>
           </div>
           <div className="scroll overflow-hidden flex lg:my-20! bg-red-200/50 ">
-            <ul className="flex gap-6 sm:gap-10 items-center py-2! lg:py-4! animate-[infinite-scroll_60s_linear_infinite]">
+            <ul className="flex gap-4 sm:gap-10 items-center py-2! lg:py-4! animate-[infinite-scroll_60s_linear_infinite]">
               {[...Array(3)].map((_, i) => (
                 <>
                   <li className="text-md sm:text-2xl lg:text-3xl font-bold">
                     <GiStarShuriken />
                   </li>
 
-                  <li className="text-lg sm:text-2xl lg:text-4xl font-bold">
+                  <li
+                    onClick={() => navigate("/")}
+                    className="text-lg sm:text-2xl lg:text-4xl font-bold cursor-pointer whitespace-nowrap overflow-hidden"
+                  >
                     {translations.lamsa}
                   </li>
                   <li className="text-md sm:text-2xl lg:text-3xl font-bold">
                     <GiStarShuriken />
                   </li>
 
-                  <li className="text-lg sm:text-2xl lg:text-4xl font-bold">
+                  <li
+                    onClick={() => navigate("/paintings")}
+                    className="text-lg sm:text-2xl lg:text-4xl font-bold cursor-pointer whitespace-nowrap overflow-hidden"
+                  >
                     {translations.paintings}
                   </li>
                   <li className="text-md sm:text-2xl lg:text-3xl font-bold">
                     <GiStarShuriken />
                   </li>
 
-                  <li className="text-lg sm:text-2xl lg:text-4xl font-bold">
+                  <li
+                    onClick={() => navigate("/curtains")}
+                    className="text-lg sm:text-2xl lg:text-4xl font-bold cursor-pointer whitespace-nowrap overflow-hidden"
+                  >
                     {translations.curtains}
                   </li>
                 </>

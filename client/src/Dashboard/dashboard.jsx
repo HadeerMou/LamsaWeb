@@ -16,13 +16,16 @@ function Dashboard() {
   };
   return (
     <TranslationProvider>
-      <div className="grid-container">
-        <DASHHeader OpenSidebar={OpenSidebar} />
+      <div className="wrap-container">
         <DashSidebar
           openSidebarToggle={openSidebarToggle}
           OpenSidebar={OpenSidebar}
         />
-        <DashHome />
+        <div className="middle-container">
+          <DASHHeader OpenSidebar={OpenSidebar} />
+
+          <DashHome />
+        </div>
       </div>
     </TranslationProvider>
   );

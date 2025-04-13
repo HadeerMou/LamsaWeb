@@ -57,6 +57,8 @@ const translations = {
     enter6digit: "Please enter the 6-digit code we sent to ",
     sendagain: "Send Again",
     continue: "Continue",
+    update: "Update",
+    cancel: "Cancel",
 
     //about
     abtit: "About Us",
@@ -185,6 +187,7 @@ const translations = {
     createCountry: "Create Country",
     createCity: "Create City",
     createCategory: "Create Category",
+    editcategory: "Edit Category",
     edit: "Edit",
     description: "Description",
     quantity: "Quantity",

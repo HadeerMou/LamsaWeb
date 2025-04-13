@@ -193,6 +193,8 @@ function DshOrders() {
         <div className="middle-container">
           <DASHHeader OpenSidebar={OpenSidebar} />
           <main className="orders">
+            <h1>{translations.ordersname}</h1>
+
             <div class="top">
               <div class="columns">
                 <div class="newOrders" onClick={() => handleFilterClick("ALL")}>

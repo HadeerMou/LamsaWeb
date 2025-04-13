@@ -156,7 +156,7 @@ function DshCategories() {
           <DASHHeader OpenSidebar={OpenSidebar} />
           <main>
             <div class="head">
-              <h1 className="allmessages">Categories</h1>
+              <h1 className="allmessages">{translations.categories}</h1>
             </div>
             {category.map((cat) => (
               <div className="messageContainer" key={cat.id}>
@@ -176,7 +176,7 @@ function DshCategories() {
                 </div>
                 <div className="no">
                   <p onClick={() => handleEditClick(cat)}>
-                    <i className="fa-solid fa-pen"></i> Edit
+                    <i className="fa-solid fa-pen"></i> {translations.edit}
                   </p>
                   <span onClick={() => handleDelete(cat.id)}>
                     <i className="fa-solid fa-trash"></i>
@@ -193,7 +193,7 @@ function DshCategories() {
             {/* Create category Form */}
             {showCreateCity && (
               <div className="create-category-form">
-                <h3>Create New category</h3>
+                <h3>{translations.createCategory}</h3>
                 <input
                   type="text"
                   placeholder="Category name in English"
@@ -222,7 +222,7 @@ function DshCategories() {
                   onChange={(e) => handleFileChange(e, "new")}
                 />
                 <button className="addprod" onClick={handleCreateCategory}>
-                  Create Category
+                  {translations.createCategory}
                 </button>
               </div>
             )}
@@ -230,7 +230,7 @@ function DshCategories() {
             {/* Edit category Modal */}
             {editingCategory && (
               <div ref={editModalRef} className="edit-category-modal">
-                <h3>Edit category</h3>
+                <h3>{translations.editcategory}</h3>
                 <input
                   type="text"
                   placeholder="Category name in English"
@@ -254,13 +254,13 @@ function DshCategories() {
                   }
                 />
                 <button className="addprod" onClick={handleUpdate}>
-                  Update
+                  {translations.update}
                 </button>
                 <button
                   className="addprod"
                   onClick={() => setEditingCategory(null)}
                 >
-                  Cancel
+                  {translations.cancel}
                 </button>
               </div>
             )}

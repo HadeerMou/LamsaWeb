@@ -74,7 +74,7 @@ function OtpPage() {
   };
 
   return (
-    <div className="relative flex flex-col min-h-screen">
+    <div className="relative flex flex-col h-screen">
       {/* Mobile Design: Background Image */}
       <div className="absolute !top-0 left-0 w-full !h-2/3 sm:h-1/2 lg:hidden">
         <img

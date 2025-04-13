@@ -131,7 +131,7 @@ function DshCountries() {
           <DASHHeader OpenSidebar={OpenSidebar} />
           <main>
             <div class="customers">
-              <h2 className="cutomerstitle">{translations.cutomerstitle}</h2>
+              <h2 className="cutomerstitle">{translations.countries}</h2>
               <table>
                 <thead>
                   <tr>

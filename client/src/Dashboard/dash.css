@@ -273,14 +273,14 @@ aside .sidebar-list .message-count {
 /* End Sidebar  */
 
 /* Main  */
-.main-container {
+/* .main-container {
   padding: 20px 0px;
   display: grid;
   margin: 0;
   gap: 1.8rem;
   grid-template-columns: 65rem 24rem;
   margin-left: -30px;
-}
+} */
 
 .main-title {
   display: flex;
