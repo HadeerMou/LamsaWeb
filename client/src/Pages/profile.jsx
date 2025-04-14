@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../Components/header";
+import { useNavigate } from "react-router-dom";
 
 function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
   const user = {
@@ -14,6 +15,7 @@ function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
     { id: 2, date: "2025-03-15", total: "$80.00", status: "Processing" },
     { id: 3, date: "2025-03-01", total: "$45.00", status: "Cancelled" },
   ];
+  const navigate = useNavigate();
   return (
     <>
       <Header
@@ -91,7 +93,10 @@ function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
         <div className="max-w-4xl !mx-auto bg-white shadow-md rounded-lg !mt-6 !p-6">
           <h2 className="text-xl font-bold !mb-4">Account Settings</h2>
           <div className="flex flex-col gap-4">
-            <button className="!bg-gray-800 text-white !py-2 !px-4 rounded hover:bg-gray-900! cursor-pointer">
+            <button
+              onClick={() => navigate("/forgot-password")}
+              className="!bg-gray-800 text-white !py-2 !px-4 rounded hover:bg-gray-900! cursor-pointer"
+            >
               Change Password
             </button>
             <button className="!bg-red-600 text-white !py-2 !px-4 rounded hover:bg-red-700! cursor-pointer">

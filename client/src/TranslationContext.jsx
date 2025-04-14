@@ -187,6 +187,8 @@ const translations = {
     createCountry: "Create Country",
     createCity: "Create City",
     createCategory: "Create Category",
+    createProduct: "Create Product",
+    imgupload: "Image Upload",
     editcategory: "Edit Category",
     edit: "Edit",
     description: "Description",
@@ -222,6 +224,7 @@ const translations = {
     orderplaces: "Order Placed Successfully!",
     thankyou: "Thank you for your purchase. Your order is being processed.",
     gohome: "Go to Homepage",
+    choosecolor: "choose by color",
   },
   ar: {
     english: "إنجليزي",
@@ -409,6 +412,8 @@ const translations = {
     createCountry: "إنشاء دولة",
     createCity: "إنشاء مدينة",
     createCategory: "إنشاء فئة",
+    createProduct: "إنشاء منتج",
+    imgupload: "تحميل الصورة",
     edit: "تحرير",
     description: "الوصف",
     quantity: "الكمية",
@@ -443,6 +448,7 @@ const translations = {
     orderplaces: "تم تقديم الطلب بنجاح",
     thankyou: "شكرًا لك على شرائك. يتم معالجة طلبك.",
     gohome: "الذهاب إلى الصفحة الرئيسية",
+    choosecolor: "اختر باللون",
   },
 };
 
@@ -451,9 +457,8 @@ const TranslationContext = createContext();
 
 export const TranslationProvider = ({ children }) => {
   const savedLanguage = localStorage.getItem("language") || "en";
-
   const [language, setLanguage] = useState(savedLanguage); // Default language is English
-  // Load the saved language from localStorage or default to English
+  const direction = language === "ar" ? "rtl" : "ltr";
 
   const changeLanguage = (newLanguage) => {
     setLanguage(newLanguage);
@@ -462,9 +467,13 @@ export const TranslationProvider = ({ children }) => {
 
   return (
     <TranslationContext.Provider
-      value={{ translations: translations[language], changeLanguage }}
+      value={{
+        translations: translations[language],
+        changeLanguage,
+        direction,
+      }}
     >
-      {children}
+      <div dir={direction}>{children}</div>
     </TranslationContext.Provider>
   );
 };

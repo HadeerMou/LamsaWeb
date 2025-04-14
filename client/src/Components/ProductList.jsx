@@ -91,7 +91,7 @@ function ProductList({ addToCart }) {
             >
               <div className="img bg-gray-100 p-5! lg:p-18! sm:p-10! flex justify-center items-center rounded-md">
                 <img
-                  className="rounded-md shadow-[rgba(0,0,0,0.488)_-4px_4px_15px] max-w-[250px]"
+                  className="rounded-md shadow-[-4px_4px_15px_rgba(0,0,0,0.488)] max-w-[250px]"
                   src="\assets\Untitled-10-03.jpg"
                   alt={product.name}
                   onMouseEnter={() => setHoveredProduct(product.id)}

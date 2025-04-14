@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 function Dshproducts() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
   const { translations } = useTranslation();
   const [products, setProducts] = useState([]);
@@ -361,23 +360,14 @@ function Dshproducts() {
             {/* Create Product Form */}
             {showCreateProduct && (
               <div className="create-user-form">
-                <h3>{translations.creatNewProd}</h3>
+                <h1>{translations.createProduct}</h1>
+                <label htmlFor="">Image upload</label>
                 <input
                   type="file"
                   onChange={(e) =>
                     setNewProduct({
                       ...newProduct,
                       imageFile: e.target.files[0],
-                    })
-                  }
-                />
-                <input
-                  type="file"
-                  accept=".glb,.gltf"
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      modelFile: e.target.files[0],
                     })
                   }
                 />
@@ -450,7 +440,7 @@ function Dshproducts() {
                   }
                 />
                 <button onClick={handleCreateProduct}>
-                  {translations.creatProd}
+                  {translations.createProduct}
                 </button>
               </div>
             )}
