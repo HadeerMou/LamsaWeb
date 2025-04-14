@@ -192,7 +192,7 @@ function DshCategories() {
             </button>
             {/* Create category Form */}
             {showCreateCity && (
-              <div className="create-category-form">
+              <div className="create-user-form">
                 <h3>{translations.createCategory}</h3>
                 <input
                   type="text"

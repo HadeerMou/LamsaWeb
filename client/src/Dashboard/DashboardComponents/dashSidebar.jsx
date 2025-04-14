@@ -84,7 +84,7 @@ function DashSidebar({ openSidebarToggle, OpenSidebar }) {
         />
         <SidebarItem
           icon="fa-solid fa-right-from-bracket"
-          label={translations.logoutname}
+          label={translations.logout}
           onClick={() => {
             localStorage.removeItem("token");
             localStorage.removeItem("userType");
