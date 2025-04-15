@@ -22,6 +22,7 @@ function Dshproducts() {
     descriptionAr: "",
     price: "",
     quantity: "",
+    color: "",
     categoryId: "",
     imageFile: null, // New field for image
   });
@@ -31,6 +32,7 @@ function Dshproducts() {
     nameAr: "",
     descriptionEn: "",
     descriptionAr: "",
+    color: "",
     price: "",
     quantity: "",
   });
@@ -100,6 +102,7 @@ function Dshproducts() {
           nameAr: newProduct.nameAr,
           descriptionEn: newProduct.descriptionEn,
           descriptionAr: newProduct.descriptionAr,
+          color: newProduct.color,
           price: newProduct.price,
           quantity: newProduct.quantity,
           categoryId: newProduct.categoryId,
@@ -157,6 +160,7 @@ function Dshproducts() {
         descriptionEn: "",
         descriptionAr: "",
         price: "",
+        color: "",
         quantity: "",
         categoryId: "",
         imageFile: null,
@@ -191,6 +195,7 @@ function Dshproducts() {
       nameAr: product.nameAr,
       descriptionEn: product.descriptionEn,
       descriptionAr: product.descriptionAr,
+      color: product.color,
       price: product.price,
       quantity: product.quantity,
       categoryId: product.categoryId,
@@ -210,6 +215,7 @@ function Dshproducts() {
         nameAr: updatedProduct.nameAr,
         descriptionEn: updatedProduct.descriptionEn,
         descriptionAr: updatedProduct.descriptionAr,
+        color: updatedProduct.color,
         price: updatedProduct.price,
         quantity: updatedProduct.quantity,
         categoryId: updatedProduct.categoryId
@@ -276,42 +282,44 @@ function Dshproducts() {
                     <th className="price">{translations.price}</th>
                     <th className="">{translations.quantity}</th>
                     <th className="categoryid">{translations.categoryId}</th>
+                    <th>{translations.color}</th>
                     <th>{translations.productmodel}</th>
                     <th>{translations.action}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((products) => (
+                  {products.map((product) => (
                     <tr
-                      key={products.id}
+                      key={product.id}
                       onClick={() =>
                         navigate(
-                          `/dashboard/products/productdetails/${products.id}`
+                          `/dashboard/products/productdetails/${product.id}`
                         )
                       }
                     >
                       <td>
                         <i class="fa-regular fa-square"></i>
                       </td>
-                      <td>{products.id}</td>
+                      <td>{product.id}</td>
                       <td>
                         <img
-                          src={products.imageUrl}
+                          src={product.imageUrl}
                           style={{ width: "50px", height: "50px" }}
-                          alt={products.name}
+                          alt={product.name}
                         />
                       </td>
-                      <td>{products.nameEn}</td>
-                      <td>{products.nameAr}</td>
-                      <td>{products.descriptionEn}</td>
-                      <td>{products.descriptionAr}</td>
-                      <td>{products.price}</td>
-                      <td>{products.quantity}</td>
-                      <td>{products.categoryId}</td>
+                      <td>{product.nameEn}</td>
+                      <td>{product.nameAr}</td>
+                      <td>{product.descriptionEn}</td>
+                      <td>{product.descriptionAr}</td>
+                      <td>{product.price}</td>
+                      <td>{product.quantity}</td>
+                      <td>{product.categoryId}</td>
+                      <td>{product.color}</td>
                       <td>
-                        {products.modelUrl ? (
+                        {product.modelUrl ? (
                           <model-viewer
-                            src={products.modelUrl}
+                            src={product.modelUrl}
                             alt="3D Model"
                             auto-rotate
                             camera-controls
@@ -326,7 +334,7 @@ function Dshproducts() {
                           className="edit"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleEditClick(products);
+                            handleEditClick(product);
                           }}
                         >
                           {translations.edit}
@@ -335,7 +343,7 @@ function Dshproducts() {
                           className="delete"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDelete(products.id);
+                            handleDelete(product.id);
                           }}
                         >
                           {translations.delete}
@@ -426,6 +434,14 @@ function Dshproducts() {
                       ...newProduct,
                       quantity: parseInt(e.target.value),
                     })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Color"
+                  value={newProduct.color}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, color: e.target.value })
                   }
                 />
                 <input
@@ -523,6 +539,17 @@ function Dshproducts() {
                     setUpdatedProduct({
                       ...updatedProduct,
                       quantity: parseInt(e.target.value),
+                    })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="Color"
+                  value={updatedProduct.color}
+                  onChange={(e) =>
+                    setUpdatedProduct({
+                      ...updatedProduct,
+                      color: e.target.value,
                     })
                   }
                 />
