@@ -10,9 +10,10 @@ function Header({ toggleCartVisibility, totalQuantity }) {
   const [cart, setCart] = useState([]); // ✅ Define cart state
   const API_BASE_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
-  const { translations, changeLanguage } = useTranslation(); // Using translation context
+  const { translations, language, changeLanguage } = useTranslation(); // Using translation context
   const [selectedLanguage, setSelectedLanguage] = useState("en"); // Default language is English
   const { selectedCurrency, changeCurrency } = useCurrency(); // Using currency context
+  const [categories, setCategories] = useState([]);
 
   const fetchUserCart = async () => {
     try {
@@ -61,6 +62,17 @@ function Header({ toggleCartVisibility, totalQuantity }) {
   };
   let [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    axios
+      .get(`${API_BASE_URL}/category`)
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, [language]);
+
   return (
     <header className="bg-white m-3!">
       <div className="mx-auto flex h-16 items-center gap-8 px-4 sm:px-6 lg:px-8">
@@ -73,10 +85,50 @@ function Header({ toggleCartVisibility, totalQuantity }) {
             <Link to="/about" className="text-gray-600 hover:text-gray-800">
               {translations.about}
             </Link>
-            <Link to="/paintings" className="text-gray-600 hover:text-gray-800">
+            <Link
+              to="/paintings"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() => {
+                const paintingsCategory = categories.find(
+                  (category) => category.nameEn.toLowerCase() === "paintings"
+                );
+                if (paintingsCategory) {
+                  localStorage.setItem("categoryId", paintingsCategory.id);
+                  navigate("/paintings", {
+                    state: {
+                      categoryId: paintingsCategory.id,
+                      categoryName:
+                        language === "ar"
+                          ? paintingsCategory.nameAr
+                          : paintingsCategory.nameEn,
+                    },
+                  });
+                }
+              }}
+            >
               {translations.paintings}
             </Link>
-            <Link to="/curtains" className="text-gray-600 hover:text-gray-800">
+            <Link
+              to="/curtains"
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() => {
+                const curtainsCategory = categories.find(
+                  (category) => category.nameEn.toLowerCase() === "curtains"
+                );
+                if (curtainsCategory) {
+                  localStorage.setItem("categoryId", curtainsCategory.id);
+                  navigate("/curtains", {
+                    state: {
+                      categoryId: curtainsCategory.id,
+                      categoryName:
+                        language === "ar"
+                          ? curtainsCategory.nameAr
+                          : curtainsCategory.nameEn,
+                    },
+                  });
+                }
+              }}
+            >
               {translations.curtains}
             </Link>
             <Link to="/contact" className="text-gray-600 hover:text-gray-800">
@@ -163,14 +215,48 @@ function Header({ toggleCartVisibility, totalQuantity }) {
           <Link
             to="/paintings"
             className="text-gray-600 hover:text-gray-800"
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              setOpen(false);
+              const paintingsCategory = categories.find(
+                (category) => category.nameEn.toLowerCase() === "paintings"
+              );
+              if (paintingsCategory) {
+                localStorage.setItem("categoryId", paintingsCategory.id);
+                navigate("/paintings", {
+                  state: {
+                    categoryId: paintingsCategory.id,
+                    categoryName:
+                      language === "ar"
+                        ? paintingsCategory.nameAr
+                        : paintingsCategory.nameEn,
+                  },
+                });
+              }
+            }}
           >
             {translations.paintings}
           </Link>
           <Link
             to="/curtains"
             className="text-gray-600 hover:text-gray-800"
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              setOpen(false);
+              const curtainsCategory = categories.find(
+                (category) => category.nameEn.toLowerCase() === "curtains"
+              );
+              if (curtainsCategory) {
+                localStorage.setItem("categoryId", curtainsCategory.id);
+                navigate("/curtains", {
+                  state: {
+                    categoryId: curtainsCategory.id,
+                    categoryName:
+                      language === "ar"
+                        ? curtainsCategory.nameAr
+                        : curtainsCategory.nameEn,
+                  },
+                });
+              }
+            }}
           >
             {translations.curtains}
           </Link>

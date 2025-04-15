@@ -62,6 +62,8 @@ function Dshproducts() {
           const modelUrl =
             productModel.length > 0 ? productModel.modelPath : null;
           console.log("Product Model Data:", productModel);
+          console.log("Product Images:", productImages);
+          console.log("Default Image:", defaultImage);
 
           return {
             ...product,
@@ -135,6 +137,9 @@ function Dshproducts() {
           }
         );
       }
+      console.log("Uploading image with productId:", createdProduct.id);
+      console.log("isDefault:", true);
+      console.log("Image File:", newProduct.imageFile);
 
       if (newProduct.modelFile) {
         const modelFormData = new FormData();

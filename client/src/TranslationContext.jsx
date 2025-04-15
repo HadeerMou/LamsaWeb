@@ -469,6 +469,7 @@ export const TranslationProvider = ({ children }) => {
     <TranslationContext.Provider
       value={{
         translations: translations[language],
+        language,
         changeLanguage,
         direction,
       }}
