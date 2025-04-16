@@ -5,6 +5,8 @@ const translations = {
   en: {
     english: "English",
     arabic: "Arabic",
+    egp: "Egp",
+    dollar: "Dollar",
     lamsa: "LAMSA",
     //header
     search: "What are you looking for?",
@@ -229,6 +231,8 @@ const translations = {
   ar: {
     english: "إنجليزي",
     arabic: "عربي",
+    egp: "جنيه",
+    dollar: "دولار",
     lamsa: "لمسة",
     //header
     search: "ما الذى تبحث عنه؟",

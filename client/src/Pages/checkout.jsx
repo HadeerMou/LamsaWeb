@@ -44,7 +44,7 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
     }
   };
 
-  /*   const fetchDefaultAddress = async () => {
+  const fetchDefaultAddress = async () => {
     try {
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
@@ -98,7 +98,7 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
 
   useEffect(() => {
     fetchDefaultAddress();
-  }, []); */
+  }, []);
 
   useEffect(() => {
     if (

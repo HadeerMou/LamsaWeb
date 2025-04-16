@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "../logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,7 +14,22 @@ function OtpPage() {
   const navigate = useNavigate();
   const [otp, setOtp] = useState(new Array(6).fill("")); // Store OTP as an array
   const inputsRef = useRef(new Array(6).fill(null));
+  useEffect(() => {
+    inputsRef.current[0]?.focus();
+  }, []);
 
+  const handleResendOtp = async (e) => {
+    e.preventDefault(); // Prevent default anchor behavior
+    try {
+      await axios.post(`${API_BASE_URL}/auth/sendotp`, {
+        input: email,
+        userType: "USER",
+      });
+      alert("OTP has been resent!");
+    } catch (error) {
+      alert("Failed to resend OTP. Please try again.");
+    }
+  };
   // Handle Input Change
   const handleChange = (e, index) => {
     const value = e.target.value;
@@ -46,10 +61,15 @@ function OtpPage() {
 
   // Verify OTP
   const handleVerifyOtp = async () => {
+    if (otp.includes("")) {
+      alert("Please enter the complete OTP.");
+      return;
+    }
     try {
       const response = await axios.post(`${API_BASE_URL}/auth/verifyotp`, {
-        email,
+        input: email,
         otp: otp.join(""), // Convert array to string
+        userType: "USER", // Required header
       });
 
       sessionStorage.setItem("otp", otp.join("")); // ✅ Store OTP in sessionStorage
@@ -62,14 +82,50 @@ function OtpPage() {
       localStorage.setItem("token", token); // Save authentication token
 
       alert("OTP Verified Successfully!");
+      const storedData = JSON.parse(localStorage.getItem("signupData"));
+      if (storedData && from === "signup") {
+        try {
+          // Final signup request to create the user in the database
+          const signupResponse = await axios.post(
+            `${API_BASE_URL}/auth/signUp`,
+            storedData,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                accept: "*/*",
+                userType: "USER",
+              },
+            }
+          );
 
-      if (from === "forgot-password") {
+          console.log("User Created:", signupResponse.data);
+
+          // Clear stored data
+          localStorage.removeItem("signupData");
+          alert("User created successfully! Please log in.");
+          navigate("/login");
+        } catch (signupError) {
+          // ✅ If user already exists, just redirect to login
+          if (
+            signupError.response?.data?.message.includes("Email already exists")
+          ) {
+            console.log("User already exists, skipping signup.");
+            localStorage.removeItem("signupData");
+            navigate("/login");
+          } else {
+            alert(
+              signupError.response?.data?.message ||
+                "Signup failed. Please try again."
+            );
+          }
+        }
+      } else if (from === "forgot-password") {
         navigate(`/reset-password?email=${encodeURIComponent(email)}`);
-      } else {
-        navigate("/signup");
       }
     } catch (err) {
-      alert("Invalid OTP. Please try again.");
+      setOtp(new Array(6).fill(""));
+      console.error("Error verifying OTP:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Invalid OTP. Please try again.");
     }
   };
 
@@ -116,10 +172,16 @@ function OtpPage() {
                 />
               ))}
             </div>
-            <Link className="block text-sm text-center !text-black/50 !underline !mb-3">
+            <Link
+              onClick={handleResendOtp}
+              className="block text-sm text-center !text-black/50 !underline !mb-3"
+            >
               {translations.sendagain}
             </Link>
-            <button className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full">
+            <button
+              onClick={handleVerifyOtp}
+              className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full"
+            >
               {translations.continue}
             </button>
           </div>
@@ -150,10 +212,16 @@ function OtpPage() {
             />
           ))}
         </div>
-        <Link className="block text-sm text-center !text-black/50 !underline !mb-3">
+        <Link
+          onClick={handleResendOtp}
+          className="block text-sm text-center !text-black/50 !underline !mb-3"
+        >
           {translations.sendagain}
         </Link>
-        <button className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full">
+        <button
+          onClick={handleVerifyOtp}
+          className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full"
+        >
           {translations.continue}
         </button>
       </div>

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "../TranslationContext";
+import { calculateTotalPrice } from "../Utils/CartUtils";
 
 export default function Cart({
   toggleCartVisibility,
@@ -15,7 +16,7 @@ export default function Cart({
 }) {
   const navigate = useNavigate();
   const { selectedCurrency, convertAmount } = useCurrency();
-  const { translations } = useTranslation();
+  const { translations, language } = useTranslation();
   const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   const handleCheckout = () => {
@@ -86,6 +87,10 @@ export default function Cart({
     return { ...product, image: imagePath };
   };
 
+  const totalPrice = parseInt(
+    calculateTotalPrice(cart, getProductInfo, convertAmount)
+  );
+
   return (
     <div
       className={`fixed top-0 right-0 w-full h-full bg-white shadow-lg flex flex-col !p-5 transform transition-transform duration-300  ${
@@ -107,7 +112,10 @@ export default function Cart({
           <span>
             {translations.totalItems}:{totalQuantity}
           </span>
-          <span></span>
+          <span>
+            {" "}
+            {translations.totalPrice}:{`${totalPrice}`}
+          </span>
         </div>
       </div>
       <div className="flex-grow overflow-y-auto">
@@ -115,24 +123,28 @@ export default function Cart({
           cart.map((item) => {
             const productInfo = getProductInfo(item.productId); // Get product details
             const convertedPrice = convertAmount(productInfo?.price || 0); // Convert price
-
             return (
               <div
                 key={item.id}
                 className="cart-item flex justify-between items-center !p-3 !mb-2 bg-gray-100"
               >
                 <img
+                  className="max-w-15 max-h-16 rounded"
                   src={`https://${productInfo?.image}`}
                   alt={productInfo?.name || "Product"}
                 />
-                <div className="name">{productInfo?.name}</div>
+                <div className="name">
+                  {language === "ar"
+                    ? productInfo?.nameAr
+                    : productInfo?.nameEn}
+                </div>
                 <div className="total-price text-red">
-                  {selectedCurrency === "egp" ? "£" : "$"}
+                  {selectedCurrency === "egp" ? `${translations.egp}` : "$"}
                   {(convertedPrice * (item.quantity || 0)).toFixed(2)}
                 </div>
                 <div className="quantity space-x-1 flex items-center gap-2">
                   <button
-                    className="bg-gray-700 text-white font-bold text-sm rounded-full !px-2"
+                    className="bg-red-700! text-white font-bold text-sm rounded-full !px-2"
                     onClick={() =>
                       updateQuantityInCart(item.productId, "minus")
                     }
@@ -141,14 +153,14 @@ export default function Cart({
                   </button>
                   <span className="m-2">{item.quantity}</span>
                   <button
-                    className="bg-gray-700 text-white font-bold text-sm rounded-full !px-2"
+                    className="bg-red-700! text-white font-bold text-sm rounded-full !px-2"
                     onClick={() => updateQuantityInCart(item.productId, "plus")}
                   >
                     +
                   </button>
                 </div>
                 <button
-                  className="delete bg-red-500 text-white text-xs !p-2 rounded-sm cursor-pointer"
+                  className="delete bg-red-500! text-white text-xs !p-2 rounded-sm cursor-pointer"
                   onClick={() => removeFromCart(item.productId)}
                 >
                   {translations.remove}
@@ -162,8 +174,11 @@ export default function Cart({
       </div>
       <div className="cart-footer text-center">
         <button
-          className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-700 transition"
-          onClick={handleCheckout}
+          className="bg-green-500! text-white w-full h-11 hover:bg-green-700! transition cursor-pointer"
+          onClick={() => {
+            handleCheckout();
+            toggleCartVisibility();
+          }}
         >
           {translations.checkout}
         </button>

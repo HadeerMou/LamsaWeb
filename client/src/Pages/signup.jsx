@@ -15,9 +15,14 @@ function Signup({ handleVerifyOtp }) {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -29,29 +34,27 @@ function Signup({ handleVerifyOtp }) {
     try {
       console.log("Sending Data:", formData);
       console.log("API URL:", API_BASE_URL);
+      // Store form data in localStorage/sessionStorage
+      localStorage.setItem("signupData", JSON.stringify(formData));
+
       const response = await axios.post(
-        `${API_BASE_URL}/auth/signUp`,
-        formData,
+        `${API_BASE_URL}/auth/sendotp`, // ✅ OTP API endpoint
+        { input: formData.email }, // ✅ Send email as input
         {
           headers: {
             "Content-Type": "application/json",
-            accept: "*/*",
             userType: "USER",
           },
         }
       );
-      console.log("Signup successful:", response.data);
-      navigate(
-        `/email-verification?email=${encodeURIComponent(formData.email)}`
-      );
-    } catch (err) {
-      if (err.response.data.message == "Email is not verified") {
-        navigate(
-          `/email-verification?email=${encodeURIComponent(formData.email)}`
-        );
-      }
+      console.log("otp sent:", response.data);
 
-      setError(err.response?.data.message || "Signup failed");
+      navigate(`/otp?input=${encodeURIComponent(formData.email)}&from=signup`);
+    } catch (err) {
+      console.error("OTP send error:", err.response?.data || err.message);
+      setError(
+        err.response?.data?.message || "Failed to send OTP. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -202,6 +205,7 @@ function Signup({ handleVerifyOtp }) {
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
           <button
             type="submit"
+            disabled={loading}
             className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full"
           >
             {translations.register}

@@ -10,6 +10,12 @@ function Signin({ userType }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { translations } = useTranslation();
+  const [showPassword, setShowPassword] = useState(false); // 👀 State for password visibility
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(""); // Reset errors
@@ -128,7 +134,10 @@ function Signin({ userType }) {
             <h5>{translations.noacc}</h5>
             <p
               className="!text-red-500 cursor-pointer font-bold"
-              onClick={() => navigate("/signup")}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/signup");
+              }}
             >
               {translations.register}
             </p>
@@ -183,7 +192,10 @@ function Signin({ userType }) {
           <h5>{translations.noacc}</h5>
           <p
             className="!text-red-500 cursor-pointer font-bold"
-            onClick={() => navigate("/signup")}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/signup");
+            }}
           >
             {translations.register}
           </p>

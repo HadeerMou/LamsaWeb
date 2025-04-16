@@ -46,6 +46,7 @@ function EmailInput() {
       const response = await axios.post(apiEndpoint, requestBody, {
         headers: {
           "Content-Type": "application/json",
+          userType: "USER", // Required header
         },
       });
 

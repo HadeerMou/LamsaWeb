@@ -5,6 +5,7 @@ import { useTranslation } from "../TranslationContext";
 import useProducts from "../Hooks/useProducts";
 import useOrders from "../Hooks/useOrders";
 import { useCurrency } from "../CurrencyContext";
+import axios from "axios";
 
 function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -19,6 +20,8 @@ function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
   const { products, fetchProductDetails } = useProducts();
   const { orders, fetchOrders } = useOrders();
   const { selectedCurrency, convertAmount } = useCurrency();
+  const [loading, setLoading] = useState(true);
+
   const [locationNames, setLocationNames] = useState({
     city: "",
     district: "",
@@ -167,18 +170,23 @@ function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
+        console.log("Token:", token);
         const response = await axios.get(`${API_BASE_URL}/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`, // Attach token for authentication
           },
         });
+        
         if (isMounted) {
+          console.log("Profile Response:", response.data.data);
           setUserData(response.data.data);
           fetchOrders();
         }
       } catch (err) {
         if (isMounted) setError("Failed to load profile.");
         console.error("Profile Fetch Error:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProfile();
@@ -194,13 +202,7 @@ function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
     localStorage.removeItem(`userAddress_${userData?.id}`);
     setUserData(null);
     setUserAddress(null);
-    navigate("/user-login");
-  };
-  const user = {
-    name: "John Doe",
-    email: "johndoe@example.com",
-    phone: "+1234567890",
-    address: "123 Main Street, City, Country",
+    navigate("/login");
   };
 
   return (
