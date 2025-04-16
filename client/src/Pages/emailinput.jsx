@@ -98,13 +98,17 @@ function EmailInput() {
             </label>
             <input
               className="input bg-transparent !border !border-black/50 rounded-md !mb-5 !p-3 w-full"
-              type="text"
+              type="email"
               name="email"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
               placeholder="email@example.com"
+              required
             />
             {error && <p className="error">{error}</p>}
             <button
               onClick={handleInput}
+              disabled={loading}
               className="!bg-red-700 text-white font-bold !py-3 rounded-lg w-full cursor-pointer"
             >
               {translations.sendcode}
@@ -124,13 +128,17 @@ function EmailInput() {
           </label>
           <input
             className="bg-transparent !border !border-black/50 rounded-md !mb-7 !p-3 w-full"
-            type="text"
+            type="email"
             name="email"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             placeholder="email@example.com"
+            required
           />
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
           <button
             onClick={handleInput}
+            disabled={loading}
             className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full"
           >
             {translations.sendcode}
