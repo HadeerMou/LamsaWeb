@@ -147,6 +147,7 @@ const translations = {
     //dashboard orders
     neworders: "New Orders",
     onprogress: "On Progress",
+    totalOrders: "Total Orders",
     deliveredorders: "Delivered Orders",
     cancelledorders: "Cancelled Orders",
     new: "New",
@@ -204,13 +205,16 @@ const translations = {
     countryId: "Country Id",
     prodOndm: "Produced on demand",
     //address
-    streetname: "Street Name",
+    street: "Street",
     selectcity: "Select City",
     selectcountry: "Select Country",
     selectdistrict: "Select District",
     setdefault: "Set as default",
     addnewaddress: "Add New Address",
     editaddress: "Edit Address",
+    defaultadd: "Set as default address",
+    createAdd: "Create Address",
+    updateAdd: "Update Address",
     //checkout
     fullname: "Full Name",
     buildingno: "Building No",
@@ -227,6 +231,16 @@ const translations = {
     thankyou: "Thank you for your purchase. Your order is being processed.",
     gohome: "Go to Homepage",
     choosecolor: "choose by color",
+    confirmOrd: "Confirm order",
+    receivedorder: "has received their order",
+    cancelledorder: "has cancelled their order",
+    pendingorder: "has pending order",
+    deleteAdmin: "Are you sure you want to delete this admin?",
+    deleteCat: "Are you sure you want to delete this category?",
+    deleteCity: "Are you sure yo want to delete this city?",
+    deleteCountry: "Are you sure yo want to delete this country?",
+    deleteProd: "Are you sure you want to delete this product?",
+    deleteFee: "Are you sure you want to delete this fee?",
   },
   ar: {
     english: "إنجليزي",
@@ -376,6 +390,7 @@ const translations = {
     onprogress: "في التقدم",
     deliveredorders: "الطلبات المُسلَّمة",
     cancelledorders: "الطلبات الملغاة",
+    totalOrders: "إجمال الطلبات",
     new: "جديد",
     showmore: "عرض المزيد",
     totalpayment: "مجموع المدفوعات",
@@ -430,13 +445,16 @@ const translations = {
     close: "غلق",
     prodOndm: "ينتج عند الطلب",
     //address
-    streetname: "اسم الشارع",
+    street: "الشارع",
     selectcity: "اختر المدينة",
     selectcountry: "اختر الدولة",
     selectdistrict: "اختر الحي",
     setdefault: "تعيين كافتراضي",
     addnewaddress: "إضافة عنوان جديد",
     editaddress: "تعديل العنوان",
+    defaultadd: "تعيين كعنوان افتراضي",
+    createAdd: "إنشاء عنوان",
+    updateAdd: "تحديث العنوان",
     //checkout
     fullname: "الاسم الكامل",
     buildingno: "رقم المبنى",
@@ -453,6 +471,16 @@ const translations = {
     thankyou: "شكرًا لك على شرائك. يتم معالجة طلبك.",
     gohome: "الذهاب إلى الصفحة الرئيسية",
     choosecolor: "اختر باللون",
+    confirmOrd: "تأكيد الطلب",
+    receivedorder: "لقد تلقى طلبهم بنجاح",
+    cancelledorder: "تم إلغاء طلبهم",
+    pendingorder: "لديه طلب قيد التنفيذ",
+    deleteAdmin: "هل أنت متأكد أنك تريد حذف هذا المشرف؟",
+    deleteCat: "هل أنت متأكد أنك تريد حذف هذه الفئة؟",
+    deleteCity: "هل أنت متأكد أنك تريد حذف هذه المدينة؟",
+    deleteCountry: "هل أنت متأكد أنك تريد حذف هذا البلد؟",
+    deleteProd: "هل أنت متأكد أنك تريد حذف هذا المنتج؟",
+    deleteFee: "هل أنت متأكد أنك تريد حذف هذه الرسوم؟",
   },
 };
 
@@ -460,8 +488,9 @@ const translations = {
 const TranslationContext = createContext();
 
 export const TranslationProvider = ({ children }) => {
-  const savedLanguage = localStorage.getItem("language") || "en";
-  const [language, setLanguage] = useState(savedLanguage); // Default language is English
+  const [language, setLanguage] = useState(
+    () => localStorage.getItem("language") || "en"
+  );
   const direction = language === "ar" ? "rtl" : "ltr";
 
   const changeLanguage = (newLanguage) => {

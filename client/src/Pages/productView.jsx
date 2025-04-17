@@ -16,7 +16,7 @@ function ProductView({
   totalQuantity,
 }) {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-  const { translations } = useTranslation();
+  const { translations, language } = useTranslation();
   const location = useLocation();
   const { selectedCurrency, convertAmount } = useCurrency();
   const [productImages, setProductImages] = useState([]);
@@ -121,12 +121,17 @@ function ProductView({
 
         // Fetch product details for each related product to get images
         const relatedProductsWithImages = await Promise.all(
-          relatedResponse.data.products.map(async (product) => {
-            const productDetails = await axios.get(
-              `${API_BASE_URL}/products/${product.id}`
-            );
-            return productDetails.data;
-          })
+          relatedResponse.data.products
+            .filter(
+              (product) =>
+                product.deletedAt === null && product.status === "ACTIVE" // ✅ Fix filter condition
+            )
+            .map(async (product) => {
+              const productDetails = await axios.get(
+                `${API_BASE_URL}/products/${product.id}`
+              );
+              return productDetails.data;
+            })
         );
 
         setRelatedProducts(relatedProductsWithImages);
@@ -144,7 +149,10 @@ function ProductView({
           throw new Error("No products found");
         }
         // Filter out the current product from recommendations
-        const filteredProducts = allProducts.filter((p) => p.id !== productId);
+        const filteredProducts = allProducts.filter(
+          (p) =>
+            p.id !== productId && p.deletedAt === null && p.status === "ACTIVE"
+        );
         // Shuffle the array and pick 4 random products
         const shuffled = filteredProducts.sort(() => 0.5 - Math.random());
         const randomProducts = shuffled.slice(0, 4);
@@ -234,9 +242,9 @@ function ProductView({
         cart={cart}
         totalQuantity={totalQuantity}
       />
-      <div className="flex flex-col lg:flex-row justify-between w-[95%] mx-auto px-5 pb-5">
+      <div className="flex flex-col items-center lg:flex-row justify-between w-[95%] mx-auto! px-5! pb-5!">
         {/* Small Images */}
-        <div className="flex flex-row lg:flex-col gap-4">
+        <div className="hidden lg:flex flex-row lg:flex-col gap-4">
           {productImages.map((img, index) => (
             <img
               key={index}
@@ -260,12 +268,17 @@ function ProductView({
           />
         </div>
         {/* Description */}
-        <div className="flex flex-col font-medium text-lg max-w-[400px] !m-4 lg:mt-0">
+        <div className="flex flex-col items-center font-medium text-lg max-w-[400px] !m-4 lg:mt-0">
           <div className="">
-            <h4 className="font-bold">{product.name}</h4>
+            <h4 className="font-bold text-sm! lg:text-2xl!">
+              {language === "ar" ? product.nameAr : product.nameEn}
+            </h4>
           </div>
-          <p className="text-sm !mt-2">{product.description}</p>
-          <p className="font-bold text-xl !mt-4">
+          <p className="text-sm lg:text-xl !mt-2">
+            {" "}
+            {language === "ar" ? product.descriptionAr : product.descriptionEn}
+          </p>
+          <p className="font-bold text-sm lg:text-xl !mt-4">
             {selectedCurrency === "egp" ? "E£" : "$"}
             {convertAmount(product.price).toFixed(2)}
           </p>

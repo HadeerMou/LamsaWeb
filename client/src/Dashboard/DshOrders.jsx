@@ -16,7 +16,7 @@ function DshOrders() {
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle);
   };
-  const { translations } = useTranslation();
+  const { translations, language } = useTranslation();
   const [showCreateForm, setShowCreateForm] = useState(false); // Toggle form
   const [orders, setOrders] = useState([]); // State to store orders
   const [users, setUsers] = useState({});
@@ -325,7 +325,9 @@ function DshOrders() {
                               </div>
                               <div className="left">
                                 <h3 className="prodname">
-                                  {product.name || "Unknown Product"}
+                                  {language === "ar"
+                                    ? product.nameAr
+                                    : product.nameEn || "Unknown Product"}
                                 </h3>
                                 <p className="price">
                                   {product.price

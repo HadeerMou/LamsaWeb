@@ -92,97 +92,108 @@ export default function Cart({
   );
 
   return (
-    <div
-      className={`fixed top-0 right-0 w-full h-full bg-white shadow-lg flex flex-col !p-5 transform transition-transform duration-300  ${
-        isCartVisible ? "translate-x-0" : "translate-x-full"
-      } md:w-[400px] sm:w-full`}
-    >
-      <div className="cart-header flex justify-between items-center !mb-6 bg-pink-100 rounded-sm !p-1.5">
-        <div className="close flex gap-3">
-          <button
-            className="font-bold !px-3 cursor-pointer"
-            onClick={toggleCartVisibility}
-          >
-            X
-          </button>
-          <h2 className="font-semibold">Cart</h2>
-        </div>
+    <>
+      {/* Overlay */}
+      {isCartVisible && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40"
+          onClick={toggleCartVisibility}
+        ></div>
+      )}
+      <div
+        className={`fixed top-0 right-0 w-full h-full bg-white shadow-lg flex flex-col !p-5 transform transition-transform duration-300 z-50  ${
+          isCartVisible ? "translate-x-0" : "translate-x-full"
+        } md:w-[400px] sm:w-full`}
+      >
+        <div className="cart-header flex justify-between items-center !mb-6 bg-pink-100 rounded-sm !p-1.5">
+          <div className="close flex gap-3">
+            <button
+              className="font-bold !px-3 cursor-pointer"
+              onClick={toggleCartVisibility}
+            >
+              X
+            </button>
+            <h2 className="font-semibold">Cart</h2>
+          </div>
 
-        <div className="cart-total flex font-bold gap-4">
-          <span>
-            {translations.totalItems}:{totalQuantity}
-          </span>
-          <span>
-            {" "}
-            {translations.totalPrice}:{`${totalPrice}`}
-          </span>
+          <div className="cart-total flex font-bold gap-4">
+            <span>
+              {translations.totalItems}:{totalQuantity}
+            </span>
+            <span>
+              {" "}
+              {translations.totalPrice}:{`${totalPrice}`}
+            </span>
+          </div>
+        </div>
+        <div className="flex-grow overflow-y-auto">
+          {cart && cart.length > 0 ? (
+            cart.map((item) => {
+              const productInfo = getProductInfo(item.productId); // Get product details
+              const convertedPrice = convertAmount(productInfo?.price || 0); // Convert price
+              return (
+                <div
+                  key={item.id}
+                  className="cart-item flex justify-between items-center !p-3 !mb-2 bg-gray-100"
+                >
+                  <img
+                    className="max-w-15 max-h-16 rounded"
+                    src={`https://${productInfo?.image}`}
+                    alt={productInfo?.name || "Product"}
+                  />
+                  <div className="name">
+                    {language === "ar"
+                      ? productInfo?.nameAr
+                      : productInfo?.nameEn}
+                  </div>
+                  <div className="total-price text-red">
+                    {selectedCurrency === "egp" ? `${translations.egp}` : "$"}
+                    {(convertedPrice * (item.quantity || 0)).toFixed(2)}
+                  </div>
+                  <div className="quantity space-x-1 flex items-center gap-2">
+                    <button
+                      className="bg-red-700! text-white font-bold text-sm rounded-full !px-2"
+                      onClick={() =>
+                        updateQuantityInCart(item.productId, "minus")
+                      }
+                    >
+                      -
+                    </button>
+                    <span className="m-2">{item.quantity}</span>
+                    <button
+                      className="bg-red-700! text-white font-bold text-sm rounded-full !px-2"
+                      onClick={() =>
+                        updateQuantityInCart(item.productId, "plus")
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+                  <button
+                    className="delete bg-red-500! text-white text-xs !p-2 rounded-sm cursor-pointer"
+                    onClick={() => removeFromCart(item.productId)}
+                  >
+                    {translations.remove}
+                  </button>
+                </div>
+              );
+            })
+          ) : (
+            <p>Your cart is empty</p>
+          )}
+        </div>
+        <div className="cart-footer text-center">
+          <button
+            className="bg-green-500! text-white w-full h-11 hover:bg-green-700! transition cursor-pointer"
+            onClick={() => {
+              handleCheckout();
+              toggleCartVisibility();
+            }}
+          >
+            {translations.checkout}
+          </button>
         </div>
       </div>
-      <div className="flex-grow overflow-y-auto">
-        {cart && cart.length > 0 ? (
-          cart.map((item) => {
-            const productInfo = getProductInfo(item.productId); // Get product details
-            const convertedPrice = convertAmount(productInfo?.price || 0); // Convert price
-            return (
-              <div
-                key={item.id}
-                className="cart-item flex justify-between items-center !p-3 !mb-2 bg-gray-100"
-              >
-                <img
-                  className="max-w-15 max-h-16 rounded"
-                  src={`https://${productInfo?.image}`}
-                  alt={productInfo?.name || "Product"}
-                />
-                <div className="name">
-                  {language === "ar"
-                    ? productInfo?.nameAr
-                    : productInfo?.nameEn}
-                </div>
-                <div className="total-price text-red">
-                  {selectedCurrency === "egp" ? `${translations.egp}` : "$"}
-                  {(convertedPrice * (item.quantity || 0)).toFixed(2)}
-                </div>
-                <div className="quantity space-x-1 flex items-center gap-2">
-                  <button
-                    className="bg-red-700! text-white font-bold text-sm rounded-full !px-2"
-                    onClick={() =>
-                      updateQuantityInCart(item.productId, "minus")
-                    }
-                  >
-                    -
-                  </button>
-                  <span className="m-2">{item.quantity}</span>
-                  <button
-                    className="bg-red-700! text-white font-bold text-sm rounded-full !px-2"
-                    onClick={() => updateQuantityInCart(item.productId, "plus")}
-                  >
-                    +
-                  </button>
-                </div>
-                <button
-                  className="delete bg-red-500! text-white text-xs !p-2 rounded-sm cursor-pointer"
-                  onClick={() => removeFromCart(item.productId)}
-                >
-                  {translations.remove}
-                </button>
-              </div>
-            );
-          })
-        ) : (
-          <p>Your cart is empty</p>
-        )}
-      </div>
-      <div className="cart-footer text-center">
-        <button
-          className="bg-green-500! text-white w-full h-11 hover:bg-green-700! transition cursor-pointer"
-          onClick={() => {
-            handleCheckout();
-            toggleCartVisibility();
-          }}
-        >
-          {translations.checkout}
-        </button>
-      </div>
-    </div>
+    </>
   );
 }

@@ -129,7 +129,17 @@ function App() {
     <CurrencyProvider>
       <TranslationProvider>
         <Routes>
-          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/profile"
+            element={
+              <Profile
+                toggleCartVisibility={toggleCartVisibility}
+                cart={cart}
+                addToCart={addToCart}
+                totalQuantity={totalQuantity}
+              />
+            }
+          />
           <Route
             path="/"
             element={

@@ -467,20 +467,9 @@ function Dshproducts() {
             )}
             {/* Edit User Modal */}
             {editingProduct && (
-              <div ref={editModalRef} className="edit-user-modal">
+              <div ref={editModalRef} className="create-user-form">
                 <h3>{translations.editProd}</h3>
-                <input
-                  type="file"
-                  accept=".glb,.gltf"
-                  placeholder="product Model"
-                  value={updatedProduct.modelFile}
-                  onChange={(e) =>
-                    setUpdatedProduct({
-                      ...updatedProduct,
-                      modelFile: e.target.value,
-                    })
-                  }
-                />
+                <label htmlFor="">Name in English</label>
                 <input
                   type="text"
                   placeholder="Name in English"
@@ -492,6 +481,8 @@ function Dshproducts() {
                     })
                   }
                 />
+                <label htmlFor="">Name in Arabic</label>
+
                 <input
                   type="text"
                   placeholder="Name in Arabic"
@@ -503,6 +494,8 @@ function Dshproducts() {
                     })
                   }
                 />
+                <label htmlFor="">Description in English</label>
+
                 <input
                   type="text"
                   placeholder="Description in English"
@@ -514,6 +507,7 @@ function Dshproducts() {
                     })
                   }
                 />
+                <label htmlFor="">Description in Arabic</label>
                 <input
                   type="text"
                   placeholder="Description in Arabic"
@@ -525,6 +519,7 @@ function Dshproducts() {
                     })
                   }
                 />
+                <label htmlFor="">Price</label>
                 <input
                   type="text"
                   placeholder="Price"
@@ -536,6 +531,7 @@ function Dshproducts() {
                     })
                   }
                 />
+                <label htmlFor="">Quantity</label>
                 <input
                   type="text"
                   placeholder="Quantity"
@@ -547,6 +543,7 @@ function Dshproducts() {
                     })
                   }
                 />
+                <label htmlFor="">Color</label>
                 <input
                   type="text"
                   placeholder="Color"
@@ -558,6 +555,7 @@ function Dshproducts() {
                     })
                   }
                 />
+                <label htmlFor="">Category ID</label>
                 <input
                   type="text"
                   placeholder="Category Id"

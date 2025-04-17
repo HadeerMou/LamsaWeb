@@ -15,19 +15,16 @@ function Dashboard() {
     setOpenSidebarToggle(!openSidebarToggle);
   };
   return (
-    <TranslationProvider>
-      <div className="wrap-container">
-        <DashSidebar
-          openSidebarToggle={openSidebarToggle}
-          OpenSidebar={OpenSidebar}
-        />
-        <div className="middle-container">
-          <DASHHeader OpenSidebar={OpenSidebar} />
-
-          <DashHome />
-        </div>
+    <div className="wrap-container">
+      <DashSidebar
+        openSidebarToggle={openSidebarToggle}
+        OpenSidebar={OpenSidebar}
+      />
+      <div className="middle-container">
+        <DASHHeader OpenSidebar={OpenSidebar} />
+        <DashHome />
       </div>
-    </TranslationProvider>
+    </div>
   );
 }
 

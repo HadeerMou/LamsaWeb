@@ -4,12 +4,12 @@ import { BsJustify } from "react-icons/bs";
 import { useTranslation } from "../../TranslationContext";
 
 function DASHHeader({ OpenSidebar }) {
-  const { translations, changeLanguage } = useTranslation(); // Using translation context
+  const { translations, changeLanguage, language } = useTranslation(); // Using translation context
   const [selectedLanguage, setSelectedLanguage] = useState("en"); // Default language is English
 
   useEffect(() => {
-    setSelectedLanguage(localStorage.getItem("language") || "en");
-  }, []);
+    setSelectedLanguage(language);
+  }, [language]);
 
   const handleLanguageChange = (event) => {
     const newLanguage = event.target.value;

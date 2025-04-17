@@ -4,12 +4,14 @@ import axios from "axios";
 import Header from "../Components/header";
 import { IoCartOutline } from "react-icons/io5";
 import { useTranslation } from "../TranslationContext";
+import { useCurrency } from "../CurrencyContext";
 
 export default function Checkout({ toggleCartVisibility, totalQuantity }) {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-  const { translations } = useTranslation();
+  const { translations, language } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
+  const { selectedCurrency, convertAmount } = useCurrency();
   const { cart, totalPrice } = location.state || { cart: [], totalPrice: 0 };
   const [defaultAddress, setDefaultAddress] = useState(null);
   const [defaultAddressId, setDefaultAddressId] = useState(null);
@@ -325,9 +327,12 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
 
             {cart.map((item) => (
               <p className="prodOrd" key={item.productId}>
-                <img src={item.image} alt={item.name} />{" "}
+                <img className="w-30! h-30" src={item.image} alt={item.name} />{" "}
                 <span className="price">
-                  {item.name} x {item.quantity} - {item.price * item.quantity}
+                  {language === "ar" ? item.nameAr : item.nameEn} x{" "}
+                  {item.quantity} -{" "}
+                  {selectedCurrency === "egp" ? `${translations.egp}` : "$"}
+                  {convertAmount(item.price).toFixed(2) * item.quantity}
                 </span>
               </p>
             ))}
@@ -342,7 +347,7 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
             <div className="flex justify-between items-center !my-1">
               <p className="">{translations.shipping}</p>
               <span className="price">
-                <b>${totalPrice.toFixed(2)}</b>
+                <b></b>
               </span>
             </div>
             <hr className="solid min-h-0.5 bg-black/20" />

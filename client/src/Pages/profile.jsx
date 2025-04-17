@@ -7,7 +7,7 @@ import useOrders from "../Hooks/useOrders";
 import { useCurrency } from "../CurrencyContext";
 import axios from "axios";
 
-function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
+function Profile({ toggleCartVisibility, cart, totalQuantity }) {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
   const { translations, language } = useTranslation();
   const [visibleDiv, setVisibleDiv] = useState("first"); // "first" or "second"
@@ -21,7 +21,6 @@ function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
   const { orders, fetchOrders } = useOrders();
   const { selectedCurrency, convertAmount } = useCurrency();
   const [loading, setLoading] = useState(true);
-
   const [locationNames, setLocationNames] = useState({
     city: "",
     district: "",
@@ -176,7 +175,7 @@ function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
             Authorization: `Bearer ${token}`, // Attach token for authentication
           },
         });
-        
+
         if (isMounted) {
           console.log("Profile Response:", response.data.data);
           setUserData(response.data.data);
@@ -245,7 +244,10 @@ function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
               </p>
             </div>
           </div>
-          <button className="!mt-6 bg-blue-600! text-white !py-2 !px-4 rounded hover:bg-blue-700!">
+          <button
+            onClick={() => navigate("/profile/addresses")}
+            className="!mt-6 bg-blue-600! text-white !py-2 !px-4 rounded hover:bg-blue-700!"
+          >
             Edit Profile
           </button>
         </div>
@@ -273,7 +275,11 @@ function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
                         0
                       )
                     );
-                    <tr key={order.id} className="!border-t">
+                    <tr
+                      key={order.id}
+                      className="!border-t"
+                      onClick={() => setSelectedOrder(order)}
+                    >
                       <td className="!py-2 !px-4">{order.id}</td>
                       <td className="!py-2 !px-4">
                         {new Date(order.createdAt).toLocaleString()}
@@ -322,4 +328,4 @@ function Profile2({ toggleCartVisibility, cart, totalQuantity }) {
   );
 }
 
-export default Profile2;
+export default Profile;

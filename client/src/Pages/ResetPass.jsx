@@ -3,20 +3,31 @@ import logo from "../logo.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "../TranslationContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function ResetPass() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-  const { translations } = useTranslation();
+  const { translations, direction } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword1, setShowPassword1] = useState(false); // 👀 State for password visibility
+  const [showPassword2, setShowPassword2] = useState(false); // 👀 State for password visibility
 
   // Extract email or token from URL query (backend should provide a token in the email link)
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get("email");
+
+  const togglePasswordVisibility1 = () => {
+    setShowPassword1(!showPassword1);
+  };
+
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2(!showPassword2);
+  };
 
   const handleResetPassword = async () => {
     setError(""); // Reset errors
@@ -49,11 +60,8 @@ function ResetPass() {
       // Clear OTP from sessionStorage after use
       sessionStorage.removeItem("otp");
 
-      // Show success message
-      alert("Password updated successfully! Please log in.");
-
-      // Redirect to login
-      navigate("/user-login");
+      setError("Password updated successfully! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       console.error("Password Reset Error:", err);
       setError(err.response?.data?.message || "Failed to reset password.");
@@ -84,19 +92,53 @@ function ResetPass() {
           <h1 className="text-3xl font-bold !mb-4">{translations.resetpass}</h1>
           <p className="text-lg !mb-10">{translations.enternewpass}</p>
           <div className="w-full">
-            <input
-              className="input bg-transparent !border !border-black/50 rounded-md !mb-7 !p-3 w-full"
-              type="password"
-              name="password"
-              placeholder={translations.newpass}
-            />
-            <input
-              className="input bg-transparent !border !border-black/50 rounded-md !mb-7 !p-3 w-full"
-              type="password"
-              name="password"
-              placeholder={translations.confirmpass}
-            />
-            <button className="!bg-red-700 text-white font-bold !py-3 rounded-lg w-full cursor-pointer">
+            <div className="relative flex items-center !border !border-black/50 rounded-md !mb-7 !p-3">
+              <input
+                className={`${
+                  direction === "ltr" ? "pl-12 pr-10" : "pl-10 pr-12"
+                } bg-transparent  w-full`}
+                type={showPassword1 ? "text" : "password"}
+                name="password"
+                value={password}
+                placeholder={translations.newpass}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <span
+                className={`${
+                  direction === "ltr" ? "right-4!" : "left-4!"
+                }absolute cursor-pointer z-20 hover:text-black`}
+                onClick={togglePasswordVisibility1}
+              >
+                {showPassword1 ? <FaEye /> : <FaEyeSlash />}
+              </span>
+            </div>
+            <div className="relative flex items-center !border !border-black/50 rounded-md !mb-7 !p-3">
+              <input
+                className={`${
+                  direction === "ltr" ? "pl-12 pr-10" : "pl-10 pr-12"
+                } bg-transparent  w-full`}
+                type={showPassword2 ? "text" : "password"}
+                name="password"
+                value={confirmPassword}
+                placeholder={translations.confirmpass}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <span
+                className={`${
+                  direction === "ltr" ? "right-4!" : "left-4!"
+                }absolute cursor-pointer z-20 hover:text-black`}
+                onClick={togglePasswordVisibility2}
+              >
+                {showPassword2 ? <FaEye /> : <FaEyeSlash />}
+              </span>
+            </div>
+
+            {error && <p className="text-red-500">{error}</p>}
+            <button
+              onClick={handleResetPassword}
+              disabled={loading}
+              className="!bg-red-700 text-white font-bold !py-3 rounded-lg w-full cursor-pointer"
+            >
               {translations.resetpass}
             </button>
           </div>
@@ -111,19 +153,53 @@ function ResetPass() {
           {translations.enternewpass}
         </p>
         <div>
-          <input
-            className="input bg-transparent !border !border-black/50 rounded-md !mb-7 !p-3 w-full"
-            type="password"
-            name="password"
-            placeholder={translations.newpass}
-          />
-          <input
-            className="input bg-transparent !border !border-black/50 rounded-md !mb-7 !p-3 w-full"
-            type="password"
-            name="password"
-            placeholder={translations.confirmpass}
-          />
-          <button className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full">
+          <div className="relative flex items-center !border !border-black/50 rounded-md !mb-7 !p-3">
+            <input
+              className={`${
+                direction === "ltr" ? "pl-12 pr-10" : "pl-10 pr-12"
+              } bg-transparent  w-full`}
+              type={showPassword1 ? "text" : "password"}
+              name="password"
+              value={password}
+              placeholder={translations.newpass}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <span
+              className={`${
+                direction === "ltr" ? "right-4!" : "left-4!"
+              }absolute cursor-pointer z-20 hover:text-black`}
+              onClick={togglePasswordVisibility1}
+            >
+              {showPassword1 ? <FaEye /> : <FaEyeSlash />}
+            </span>
+          </div>
+          <div className="relative flex items-center !border !border-black/50 rounded-md !mb-7 !p-3">
+            <input
+              className={`${
+                direction === "ltr" ? "pl-12 pr-10" : "pl-10 pr-12"
+              } bg-transparent  w-full`}
+              type={showPassword2 ? "text" : "password"}
+              name="password"
+              value={confirmPassword}
+              placeholder={translations.confirmpass}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <span
+              className={`${
+                direction === "ltr" ? "right-4!" : "left-4!"
+              }absolute cursor-pointer z-20 hover:text-black`}
+              onClick={togglePasswordVisibility2}
+            >
+              {showPassword2 ? <FaEye /> : <FaEyeSlash />}
+            </span>
+          </div>
+
+          {error && <p className="text-red-500">{error}</p>}
+          <button
+            onClick={handleResetPassword}
+            disabled={loading}
+            className="bg-red-700! text-white font-bold !py-3 rounded-lg w-full"
+          >
             {translations.resetpass}
           </button>
         </div>
