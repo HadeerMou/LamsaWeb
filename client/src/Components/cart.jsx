@@ -16,7 +16,7 @@ export default function Cart({
 }) {
   const navigate = useNavigate();
   const { selectedCurrency, convertAmount } = useCurrency();
-  const { translations, language } = useTranslation();
+  const { translations, language, direction } = useTranslation();
   const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   const handleCheckout = () => {
@@ -101,11 +101,17 @@ export default function Cart({
         ></div>
       )}
       <div
-        className={`fixed top-0 right-0 w-full h-full bg-white shadow-lg flex flex-col !p-5 transform transition-transform duration-300 z-50  ${
-          isCartVisible ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 ${
+          direction === "ltr" ? "right-0!" : "left-0!"
+        } w-full h-full bg-white shadow-lg flex flex-col !p-5 z-50  ${
+          isCartVisible
+            ? "translate-x-0 transform transition-transform duration-300"
+            : direction === "ltr"
+            ? "translate-x-full"
+            : "-translate-x-full"
         } md:w-[400px] sm:w-full`}
       >
-        <div className="cart-header flex justify-between items-center !mb-6 bg-pink-100 rounded-sm !p-1.5">
+        <div className="cart-header flex justify-between items-center !mb-6 bg-red-300 rounded-sm !p-1.5">
           <div className="close flex gap-3">
             <button
               className="font-bold !px-3 cursor-pointer"

@@ -7,7 +7,7 @@ export default function Footer() {
   const navigate = useNavigate();
   return (
     <>
-      <footer className="p-12! lg:p-20!  bg-red-300/40 shadow-2xl shadow-red-500 rounded-t-[14%]">
+      <footer className="p-12! lg:p-20!  bg-red-300/70 shadow-2xl shadow-red-500 rounded-t-[14%]">
         <div className="footer flex flex-col items-center mx-auto px-4 py-16 sm:px-6 lg:px-8">
           <div className="flex justify-center text-gray-700">
             <h1 className="text-2xl! lg:text-3xl!">{translations.lamsa}</h1>

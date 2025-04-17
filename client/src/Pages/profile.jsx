@@ -213,7 +213,7 @@ function Profile({ toggleCartVisibility, cart, totalQuantity }) {
       />
       <div className="min-h-screen bg-gray-100">
         {/* Header */}
-        <div className="bg-gray-800 text-white !py-6 !px-4 text-center">
+        <div className="bg-red-300 text-white !py-6 !px-4 text-center">
           <h1 className="text-2xl font-bold">My Profile</h1>
         </div>
         {/* Profile Info */}
@@ -258,10 +258,10 @@ function Profile({ toggleCartVisibility, cart, totalQuantity }) {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="!py-2 px-4">Order ID</th>
-                  <th className="!py-2 px-4">Date</th>
-                  <th className="!py-2 px-4">Total</th>
-                  <th className="!py-2 px-4">Status</th>
+                  <th className="!py-2 px-4!">Order ID</th>
+                  <th className="!py-2 px-4!">Date</th>
+                  <th className="!py-2 px-4!">Total</th>
+                  <th className="!py-2 px-4!">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -275,33 +275,35 @@ function Profile({ toggleCartVisibility, cart, totalQuantity }) {
                         0
                       )
                     );
-                    <tr
-                      key={order.id}
-                      className="!border-t"
-                      onClick={() => setSelectedOrder(order)}
-                    >
-                      <td className="!py-2 !px-4">{order.id}</td>
-                      <td className="!py-2 !px-4">
-                        {new Date(order.createdAt).toLocaleString()}
-                      </td>
-                      <td className="!py-2 !px-4">
-                        {selectedCurrency === "egp"
-                          ? `${translations.egp}`
-                          : "$"}{" "}
-                        {totalOrderPrice.toFixed(2)}
-                      </td>
-                      <td
-                        className={`!py-2 !px-4 ${
-                          order.status === "DELIVERED"
-                            ? "text-green-600"
-                            : order.status === "PENDING"
-                            ? "text-yellow-600"
-                            : "text-red-600"
-                        }`}
+                    return (
+                      <tr
+                        key={order.id}
+                        className="!border-t"
+                        onClick={() => setSelectedOrder(order)}
                       >
-                        {order.status}
-                      </td>
-                    </tr>;
+                        <td className="!py-2 !px-4">{order.id}</td>
+                        <td className="!py-2 !px-4">
+                          {new Date(order.createdAt).toLocaleString()}
+                        </td>
+                        <td className="!py-2 !px-4">
+                          {selectedCurrency === "egp"
+                            ? `${translations.egp}`
+                            : "$"}{" "}
+                          {totalOrderPrice.toFixed(2)}
+                        </td>
+                        <td
+                          className={`!py-2 !px-4 ${
+                            order.status === "DELIVERED"
+                              ? "text-green-600"
+                              : order.status === "PENDING"
+                              ? "text-yellow-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {order.status}
+                        </td>
+                      </tr>
+                    );
                   })
                 )}
               </tbody>
@@ -314,13 +316,13 @@ function Profile({ toggleCartVisibility, cart, totalQuantity }) {
           <div className="flex flex-col gap-4">
             <button
               onClick={() => navigate("/forgot-password")}
-              className="!bg-gray-800 text-white !py-2 !px-4 rounded hover:bg-gray-900! cursor-pointer"
+              className="!bg-red-300 text-white !py-2 !px-4 rounded hover:bg-gray-900! cursor-pointer"
             >
               Change Password
             </button>
-            <button className="!bg-red-600 text-white !py-2 !px-4 rounded hover:bg-red-700! cursor-pointer">
+            {/*  <button className="!bg-red-600 text-white !py-2 !px-4 rounded hover:bg-red-700! cursor-pointer">
               Delete Account
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

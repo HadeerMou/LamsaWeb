@@ -6,6 +6,7 @@ import Header from "../Components/header";
 import { useCurrency } from "../CurrencyContext";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { FaCartPlus } from "react-icons/fa";
 
 function ProductView({
   toggleCartVisibility,
@@ -48,8 +49,8 @@ function ProductView({
         : ["/path/to/default/image.jpg"];
 
     return (
-      <Link to={`/product/${product.id}`} key={product.id}>
-        <div className="rproduct flex-shrink-0 w-[300px] snap-start p-4">
+      <div key={product.id}>
+        <div className="card bg-white rounded-lg shadow-md flex-shrink-0 snap-start p-5!">
           <div className="img">
             <img
               src={
@@ -57,29 +58,36 @@ function ProductView({
                   ? images[1]
                   : images[0]
               }
+              onClick={() => {
+                navigate(`/product/${product.id}`, { state: { product } });
+              }}
               alt={product.name}
               onMouseEnter={() => setHoveredProduct(product.id)}
               onMouseLeave={() => setHoveredProduct(null)}
-              className="w-full h-auto rounded-md"
+              className="h-auto rounded-md max-w-[250px] shadow-[-4px_4px_15px_rgba(0,0,0,0.488)] cursor-pointer"
             />
           </div>
-          <div className="content max-w-[250px] mx-auto mt-2">
-            <h4 className="font-bold text-lg">{product.name}</h4>
-            <p className="desc text-sm text-gray-600 max-w-[150px]">
-              {product.description}
-            </p>
-            <p className="price text-red-500 font-bold mt-2">
-              {product.price} EGP
-            </p>
-            <div className="productIcon bg-gray-700 text-white rounded-full p-2 mt-2 mx-auto">
-              <i
-                className="bi bi-cart-plus text-lg"
-                onClick={() => addToCart(product)}
-              ></i>
+          <div className="flex max-w-[250px] items-center justify-between mt-4! mx-5!">
+            <div>
+              <h4 className="font-bold text-lg">{product.name}</h4>
+              <p className="desc text-sm text-gray-600 max-w-[150px]">
+                {language === "ar"
+                  ? product.descriptionAr
+                  : product.descriptionEn}
+              </p>
+              <p className="price text-red-500 font-bold mt-2!">
+                {product.price}{" "}
+                {selectedCurrency === "egp" ? `${translations.egp}` : "$"}
+              </p>
+            </div>
+            <div className="productIcon bg-red-700 text-white rounded-full p-2! mt-2! mx-auto! w-fit">
+              <i onClick={() => addToCart(product)}>
+                <FaCartPlus size={15} />
+              </i>
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     );
   };
 
@@ -279,12 +287,12 @@ function ProductView({
             {language === "ar" ? product.descriptionAr : product.descriptionEn}
           </p>
           <p className="font-bold text-sm lg:text-xl !mt-4">
-            {selectedCurrency === "egp" ? "E£" : "$"}
+            {selectedCurrency === "egp" ? `${translations.egp}` : "$"}
             {convertAmount(product.price).toFixed(2)}
           </p>
           <div className="!mt-8 justify-end flex">
             <button
-              className="w-[100px] lg:w-[250px] h-[40px] lg:h-[50px] !bg-green-900 text-white rounded-full text-sm lg:text-base font-bold hover:bg-gray-700"
+              className="w-[100px] lg:w-[250px] h-[40px] lg:h-[50px] !bg-red-400/80 text-white rounded-full text-sm lg:text-base font-bold hover:bg-red-400! transition cursor-pointer"
               onClick={() => addToCart(product)}
             >
               {translations.addtocart}
@@ -301,7 +309,7 @@ function ProductView({
               {translations.relatedname}
             </h1>
           </div>
-          <div className="flex gap-5 overflow-x-auto whitespace-nowrap px-5 py-2 scroll-snap-x snap-mandatory">
+          <div className="flex gap-5 overflow-x-auto whitespace-nowrap px-5! py-2! scroll-snap-x snap-mandatory">
             {relatedProducts.length > 0 ? (
               relatedProducts.map(renderProductCard)
             ) : (
@@ -316,11 +324,11 @@ function ProductView({
       <div className="!mb-8">
         <section className="max-w-full">
           <div className="">
-            <h1 className="text-lg sm:text-2xl lg:text-3xl text-center font-bold px-5 py-10">
+            <h1 className="text-lg sm:text-2xl lg:text-3xl text-center font-bold px-5! py-10!">
               {translations.recommendedname}
             </h1>
           </div>
-          <div className="productss flex gap-5 overflow-x-auto whitespace-nowrap px-5 py-2 scroll-snap-x snap-mandatory">
+          <div className="productss flex gap-5 overflow-x-auto whitespace-nowrap px-5! py-2! scroll-snap-x snap-mandatory">
             {recommendedProducts.length > 0 ? (
               recommendedProducts.map(renderProductCard)
             ) : (

@@ -36,7 +36,7 @@ export default function Contact({ toggleCartVisibility, cart, totalQuantity }) {
             </h2>
             <h2 className="flex text-4xl lg:text-6xl!">commit</h2>
           </div>
-          <div className="scroll overflow-hidden flex lg:my-20! bg-red-200/50 ">
+          <div className="scroll overflow-hidden flex lg:my-20! bg-red-300/50 ">
             <ul className="flex gap-4 sm:gap-10 items-center py-2! lg:py-4! animate-[infinite-scroll_60s_linear_infinite]">
               {[...Array(3)].map((_, i) => (
                 <>
