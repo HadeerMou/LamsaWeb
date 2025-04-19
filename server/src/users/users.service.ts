@@ -31,8 +31,6 @@ export class UsersService {
       throw new BadRequestException(`${conflicts.join(', ')} already exists.`);
     }
 
-    user.password = await bcrypt.hash(user.password, 10);
-
     // Check if the OTP was verified
     const isOtpVerified = await this.isVerified(user.email);
     if (!isOtpVerified) {
@@ -40,6 +38,9 @@ export class UsersService {
         'Email is not verified. Please verify OTP.',
       );
     }
+
+    user.password = await bcrypt.hash(user.password, 10);
+
     return await prisma.users.create({
       data: {
         ...user,

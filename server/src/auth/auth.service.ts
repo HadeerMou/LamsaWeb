@@ -61,9 +61,33 @@ export class AuthService {
 
   async signUp(user: Record<string, any>, userType: string) {
     if (userType === Role.User.toString()) {
-      if (!(await this.userService.isVerified(user.email))) {
-        throw new BadRequestException('Email is not verified');
+      const existingUserByEmail = await prisma.users.findUnique({
+        where: { email: user.email },
+      });
+
+      if (existingUserByEmail) {
+        if (!existingUserByEmail.isVerified) {
+          throw new BadRequestException('Email is not verified');
+        }
+        throw new BadRequestException('Email already exists');
       }
+
+      const existingUserByUsername = await prisma.users.findUnique({
+        where: { username: user.username },
+      });
+
+      if (existingUserByUsername) {
+        throw new BadRequestException('Username already exists');
+      }
+
+      const existingUserByPhone = await prisma.users.findUnique({
+        where: { phone: user.phone },
+      });
+
+      if (existingUserByPhone) {
+        throw new BadRequestException('Phone number already exists');
+      }
+
       return await this.userService.create(user as any);
     }
   }
