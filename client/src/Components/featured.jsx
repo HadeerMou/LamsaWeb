@@ -14,7 +14,6 @@ function Featured() {
       try {
         const response = await axios.get(`${API_BASE_URL}/products`, {});
         setProducts(response.data);
-        console.log("Products:", response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }

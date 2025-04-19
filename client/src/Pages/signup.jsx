@@ -30,13 +30,45 @@ function Signup({ handleVerifyOtp }) {
     document.activeElement.blur();
     setLoading(true);
     setError("");
+    const { username, email, password, phone } = formData;
+    // Validate all required fields
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Validates email format
+    const phoneRegex = /^[0-9]{10,15}$/; // Validates phone number (10-15 digits)
+    if (!username || !email || !password || !phone) {
+      setError("All fields are required.");
+      setLoading(false);
+      return;
+    }
+    // Validate username
+    if (username.trim().length < 4) {
+      setError("Username must be at least 4 characters.");
+      setLoading(false);
+      return;
+    }
+
+    // Validate email
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
+    // Validate password
+    if (password.trim().length < 6) {
+      setError("Password must be at least 6 characters.");
+      setLoading(false);
+      return;
+    }
+
+    // Validate phone number
+    if (!phoneRegex.test(phone)) {
+      setError("Phone number must be 10-15 digits and contain only numbers.");
+      setLoading(false);
+      return;
+    }
 
     try {
-      console.log("Sending Data:", formData);
-      console.log("API URL:", API_BASE_URL);
       // Store form data in localStorage/sessionStorage
       localStorage.setItem("signupData", JSON.stringify(formData));
-
       const response = await axios.post(
         `${API_BASE_URL}/auth/sendotp`, // ✅ OTP API endpoint
         { input: formData.email }, // ✅ Send email as input
@@ -47,8 +79,6 @@ function Signup({ handleVerifyOtp }) {
           },
         }
       );
-      console.log("otp sent:", response.data);
-
       navigate(`/otp?input=${encodeURIComponent(formData.email)}&from=signup`);
     } catch (err) {
       console.error("OTP send error:", err.response?.data || err.message);
@@ -128,7 +158,7 @@ function Signup({ handleVerifyOtp }) {
               onChange={handleChange}
               placeholder="(e.g. 0123456789)"
             />
-            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+            {error && <p className="text-red-500 text-sm !mb-4">{error}</p>}
             <button
               type="submit"
               className="!bg-red-700 text-white font-bold !py-3 rounded-lg w-full cursor-pointer"

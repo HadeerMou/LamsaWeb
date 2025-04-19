@@ -341,7 +341,10 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
             <div className="flex justify-between items-center !mt-1">
               <p className="">{translations.subtotal}</p>
               <span className="price">
-                <b>${totalPrice.toFixed(2)}</b>
+                <b>
+                  {selectedCurrency === "egp" ? `${translations.egp}` : " $"}{" "}
+                  {totalPrice.toFixed(2)}
+                </b>
               </span>
             </div>
             <div className="flex justify-between items-center !my-1">
@@ -355,12 +358,15 @@ export default function Checkout({ toggleCartVisibility, totalQuantity }) {
             <div className="flex justify-between items-center">
               <p className="text-black/80! text-lg">{translations.total}</p>
               <span className="price text-lg">
-                <b>${totalPrice.toFixed(2)}</b>
+                <b>
+                  {selectedCurrency === "egp" ? `${translations.egp}` : " $"}{" "}
+                  {totalPrice.toFixed(2)}
+                </b>
               </span>
             </div>
             <button
               type="submit"
-              className="!py-3 w-full !mt-8 bg-red-300! rounded-md text-white hover:bg-red-500!"
+              className="!py-3 w-full !mt-8 bg-red-300! rounded-md text-white hover:bg-red-500! cursor-pointer"
               onClick={handleSubmit}
             >
               {translations.checkout}

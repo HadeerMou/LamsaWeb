@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "../TranslationContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Approach() {
-  const { translations } = useTranslation();
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
+  const { translations, language } = useTranslation();
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`${API_BASE_URL}/category`)
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, [language]);
+
   return (
     <>
       <div className="flex flex-wrap approachContainer px-2! pt-14! lg:p-10! justify-around items-center">
@@ -55,13 +69,45 @@ function Approach() {
       <div className="flex justify-center items-center gap-2 lg:gap-5 approachBtnContainer p-5! lg:p-10!">
         <button
           className="bg-gray-100 hover:bg-red-300! px-3! lg:px-6! lg:py-3! py-2! rounded-full lg:text-2xl cursor-pointer transition"
-          onClick={() => navigate("/curtains")}
+          onClick={() => {
+            const curtainsCategory = categories.find(
+              (category) => category.nameEn.toLowerCase() === "curtains"
+            );
+            if (curtainsCategory) {
+              localStorage.setItem("categoryId", curtainsCategory.id);
+              navigate("/curtains", {
+                state: {
+                  categoryId: curtainsCategory.id,
+                  categoryName:
+                    language === "ar"
+                      ? curtainsCategory.nameAr
+                      : curtainsCategory.nameEn,
+                },
+              });
+            }
+          }}
         >
           {translations.curtains}
         </button>
         <button
           className="bg-gray-100 hover:bg-red-300! px-3! py-2! lg:px-6! lg:py-3! rounded-full lg:text-2xl cursor-pointer transition"
-          onClick={() => navigate("/paintings")}
+          onClick={() => {
+            const paintingsCategory = categories.find(
+              (category) => category.nameEn.toLowerCase() === "paintings"
+            );
+            if (paintingsCategory) {
+              localStorage.setItem("categoryId", paintingsCategory.id);
+              navigate("/paintings", {
+                state: {
+                  categoryId: paintingsCategory.id,
+                  categoryName:
+                    language === "ar"
+                      ? paintingsCategory.nameAr
+                      : paintingsCategory.nameEn,
+                },
+              });
+            }
+          }}
         >
           {translations.paintings}
         </button>

@@ -1,10 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "../TranslationContext";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Footer() {
-  const { translations } = useTranslation();
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
+  const { translations, language } = useTranslation();
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`${API_BASE_URL}/category`)
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, [language]);
+
   return (
     <>
       <footer className="p-12! lg:p-20!  bg-red-300/70 shadow-2xl shadow-red-500 rounded-t-[14%]">
@@ -39,21 +53,53 @@ export default function Footer() {
 
             <li>
               <Link
-                to={"/paintings"}
+                to="/paintings"
                 className="text-gray-700 transition hover:text-gray-700/75"
+                onClick={() => {
+                  const paintingsCategory = categories.find(
+                    (category) => category.nameEn.toLowerCase() === "paintings"
+                  );
+                  if (paintingsCategory) {
+                    localStorage.setItem("categoryId", paintingsCategory.id);
+                    navigate("/paintings", {
+                      state: {
+                        categoryId: paintingsCategory.id,
+                        categoryName:
+                          language === "ar"
+                            ? paintingsCategory.nameAr
+                            : paintingsCategory.nameEn,
+                      },
+                    });
+                  }
+                }}
               >
-                {" "}
-                {translations.paintings}{" "}
+                {translations.paintings}
               </Link>
             </li>
 
             <li>
               <Link
-                to={"/curtains"}
+                to="/curtains"
                 className="text-gray-700 transition hover:text-gray-700/75"
+                onClick={() => {
+                  const curtainsCategory = categories.find(
+                    (category) => category.nameEn.toLowerCase() === "curtains"
+                  );
+                  if (curtainsCategory) {
+                    localStorage.setItem("categoryId", curtainsCategory.id);
+                    navigate("/curtains", {
+                      state: {
+                        categoryId: curtainsCategory.id,
+                        categoryName:
+                          language === "ar"
+                            ? curtainsCategory.nameAr
+                            : curtainsCategory.nameEn,
+                      },
+                    });
+                  }
+                }}
               >
-                {" "}
-                {translations.curtains}{" "}
+                {translations.curtains}
               </Link>
             </li>
 

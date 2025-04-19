@@ -41,8 +41,6 @@ function ProductList({ addToCart }) {
           language === "ar" ? response.data.nameAr : response.data.nameEn
         );
       });
-      console.log("Current Language:", language);
-      console.log("Selected Category Name:", categoryName);
     } else {
       localStorage.removeItem("categoryId");
       localStorage.removeItem("categoryName");
@@ -169,7 +167,7 @@ function ProductList({ addToCart }) {
                 <div className="desc !py-2 text-center">
                   <h3>{language === "ar" ? product.nameAr : product.nameEn}</h3>
                   <p>
-                    {selectedCurrency === "egp" ? "E£" : "$"}
+                    {selectedCurrency === "egp" ? `${translations.egp}` : "$"}
                     {product.price && !isNaN(product.price)
                       ? convertAmount(Number(product.price)).toFixed(2)
                       : "N/A"}

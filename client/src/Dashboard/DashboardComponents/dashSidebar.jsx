@@ -15,7 +15,6 @@ import { IoIosLogOut } from "react-icons/io";
 
 function DashSidebar({ openSidebarToggle, OpenSidebar }) {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
   const { translations, language } = useTranslation();
   const navigate = useNavigate();
   return (
@@ -47,52 +46,52 @@ function DashSidebar({ openSidebarToggle, OpenSidebar }) {
       </div>
       <ul className="mt-6! space-y-4!">
         <SidebarItem
-          icon={<MdDashboard />}
+          icon={<MdDashboard size={20} />}
           label={translations.dashboardname}
           onClick={() => navigate("/dashboard")}
         />
         <SidebarItem
-          icon={<FaUsers />}
+          icon={<FaUsers size={20} />}
           label={translations.customersname}
           onClick={() => navigate("/dashboard/users")}
         />
         <SidebarItem
-          icon={<RiShoppingBag3Fill />}
+          icon={<RiShoppingBag3Fill size={20} />}
           label={translations.ordersname}
           onClick={() => navigate("/dashboard/orders")}
         />
         <SidebarItem
-          icon={<BiSolidLandscape />}
+          icon={<BiSolidLandscape size={20} />}
           label={translations.countries}
           onClick={() => navigate("/dashboard/countries")}
         />
         <SidebarItem
-          icon={<FaCity />}
+          icon={<FaCity size={20} />}
           label={translations.cities}
           onClick={() => navigate("/dashboard/cities")}
         />
         <SidebarItem
-          icon={<FaShop />}
+          icon={<FaShop size={20} />}
           label={translations.productsname}
           onClick={() => navigate("/dashboard/products")}
         />
         <SidebarItem
-          icon={<BiCategoryAlt />}
+          icon={<BiCategoryAlt size={20} />}
           label={translations.categories}
           onClick={() => navigate("/dashboard/categories")}
         />
         <SidebarItem
-          icon={<FaMoneyCheckAlt />}
+          icon={<FaMoneyCheckAlt size={20} />}
           label={translations.shippingfees}
           onClick={() => navigate("/dashboard/shippingfees")}
         />
         <SidebarItem
-          icon={<RiAdminFill />}
+          icon={<RiAdminFill size={20} />}
           label={translations.adminname}
           onClick={() => navigate("/dashboard/admins")}
         />
         <SidebarItem
-          icon={<IoIosLogOut />}
+          icon={<IoIosLogOut size={20} />}
           label={translations.logout}
           onClick={() => {
             localStorage.removeItem("token");

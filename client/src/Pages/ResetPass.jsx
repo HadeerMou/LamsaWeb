@@ -14,9 +14,8 @@ function ResetPass() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPassword1, setShowPassword1] = useState(false); // 👀 State for password visibility
-  const [showPassword2, setShowPassword2] = useState(false); // 👀 State for password visibility
-
+  const [showPassword1, setShowPassword1] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
   // Extract email or token from URL query (backend should provide a token in the email link)
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get("email");
@@ -36,19 +35,16 @@ function ResetPass() {
       setError("Both fields are required");
       return;
     }
-
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-
     if (password.length < 6) {
       setError("Password must be at least 6 characters long");
       return;
     }
 
     setLoading(true);
-
     const otp = sessionStorage.getItem("otp"); // ✅ Retrieve OTP stored in sessionStorage
 
     try {
@@ -59,7 +55,6 @@ function ResetPass() {
       });
       // Clear OTP from sessionStorage after use
       sessionStorage.removeItem("otp");
-
       setError("Password updated successfully! Redirecting to login...");
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {

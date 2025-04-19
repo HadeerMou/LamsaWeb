@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import { useTranslation } from "../TranslationContext";
 import { useCurrency } from "../CurrencyContext";
+import { FaChartPie } from "react-icons/fa6";
+import { IoBarChartSharp } from "react-icons/io5";
+import { FaChartLine } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
+
 function DashHome() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
   const { translations } = useTranslation();
   const [orders, setOrders] = useState([]);
   const [stats, setStats] = useState({
@@ -145,33 +148,28 @@ function DashHome() {
       <main className="main-container">
         <div className="main">
           <div className="main-title">
-            <h3 className="dashtitle">{translations.dashtitle}</h3>
+            <h3 className="text-2xl! lg:text-4xl! p-4! font-bold">
+              {translations.dashtitle}
+            </h3>
           </div>
-
           <div className="main-cards">
             <div className="card">
-              <div class="sales">
-                <i class="fa-solid fa-chart-pie"></i>
+              <div class="sales flex lg:flex-col md:flex-col justify-between items-center lg:items-start md:items-start">
+                <div>
+                  <FaChartPie />
+                </div>
                 <div class="middle">
                   <div class="left">
                     <h3 className="totalsales">{translations.totalOrders}</h3>
                     <h5 className="price">{stats.total}</h5>
                   </div>
-                  {/* <div class="progress">
-                    <svg>
-                      <circle cx="38" cy="38" r="36"></circle>
-                    </svg>
-                    <div class="number">
-                      <p>81%</p>
-                    </div>
-                  </div> */}
                 </div>
                 <small class="time">{translations.time}</small>
               </div>
             </div>
             <div className="card">
-              <div class="expanses">
-                <i class="fa-solid fa-chart-column"></i>
+              <div class="expanses flex lg:flex-col md:flex-col justify-between items-center lg:items-start md:items-start">
+                <IoBarChartSharp />
                 <div class="middle">
                   <div class="left">
                     <h3 className="totalexpanses">
@@ -179,21 +177,13 @@ function DashHome() {
                     </h3>
                     <h5 className="price">{stats.delivered}</h5>
                   </div>
-                  {/* <div class="progress">
-                    <svg>
-                      <circle cx="38" cy="38" r="36"></circle>
-                    </svg>
-                    <div class="number">
-                      <p>81%</p>
-                    </div>
-                  </div> */}
                 </div>
                 <small class="time">{translations.time}</small>
               </div>
             </div>
             <div className="card">
-              <div class="income">
-                <i class="fa-solid fa-chart-line"></i>
+              <div class="income flex lg:flex-col md:flex-col justify-between items-center lg:items-start md:items-start">
+                <FaChartLine />
                 <div class="middle">
                   <div class="left">
                     <h3 className="totalincome">
@@ -201,21 +191,13 @@ function DashHome() {
                     </h3>
                     <h5 className="price">{stats.cancelled}</h5>
                   </div>
-                  {/* <div class="progress">
-                    <svg>
-                      <circle cx="38" cy="38" r="36"></circle>
-                    </svg>
-                    <div class="number">
-                      <p>81%</p>
-                    </div>
-                  </div> */}
                 </div>
                 <small class="time">{translations.time}</small>
               </div>
             </div>
           </div>
           <div class="recent-orders">
-            <h2 className="recentorders">{translations.recentorders}</h2>
+            <h2 className="recentorders m-2! font-bold">{translations.recentorders}</h2>
             <table>
               <thead>
                 <tr>
@@ -281,20 +263,17 @@ function DashHome() {
                 )}
               </tbody>
             </table>
-            <a href="#" className="showall">
-              Show All
-            </a>
           </div>
         </div>
         <div class="right">
           <div class="recent-updates">
-            <h2 className="recentupdates">{translations.recentupdates}</h2>
+            <h2 className="recentupdates font-bold">{translations.recentupdates}</h2>
             <div class="updates">
               {recentUpdates.length > 0 ? (
                 recentUpdates.map((update, index) => (
                   <div class="update" key={index}>
                     <div class="profile-photo">
-                      <i class="fa-solid fa-user"></i>
+                      <FaUser size={20}/>
                     </div>
                     <div class="message">
                       <p>

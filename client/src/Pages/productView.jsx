@@ -69,7 +69,9 @@ function ProductView({
           </div>
           <div className="flex max-w-[250px] items-center justify-between mt-4! mx-5!">
             <div>
-              <h4 className="font-bold text-lg">{product.name}</h4>
+              <h4 className="font-bold text-lg">
+                {language === "ar" ? product.nameAr : product.nameEn}
+              </h4>
               <p className="desc text-sm text-gray-600 max-w-[150px]">
                 {language === "ar"
                   ? product.descriptionAr
@@ -80,7 +82,7 @@ function ProductView({
                 {selectedCurrency === "egp" ? `${translations.egp}` : "$"}
               </p>
             </div>
-            <div className="productIcon bg-red-700 text-white rounded-full p-2! mt-2! mx-auto! w-fit">
+            <div className="productIcon bg-red-700 text-white rounded-full p-2! mt-2! w-fit cursor-pointer">
               <i onClick={() => addToCart(product)}>
                 <FaCartPlus size={15} />
               </i>
@@ -259,7 +261,7 @@ function ProductView({
               src={img}
               alt="Product"
               onClick={() => setBigImage(img)}
-              className="w-[100px] h-[100px] lg:w-[180px] lg:h-[180px] mt-4 cursor-pointer border-2 border-transparent hover:border-gray-400"
+              className="w-[100px] h-[100px] lg:w-[180px] lg:h-[180px] mt-4! cursor-pointer border-2! border-transparent! hover:border-gray-400!"
             />
           ))}
         </div>
@@ -272,7 +274,7 @@ function ProductView({
           <img
             src={bigImage}
             alt={product.name}
-            className="w-full h-[500px] lg:h-[900px] object-contain"
+            className="w-full h-[500px] lg:h-[800px] object-contain"
           />
         </div>
         {/* Description */}
@@ -287,7 +289,7 @@ function ProductView({
             {language === "ar" ? product.descriptionAr : product.descriptionEn}
           </p>
           <p className="font-bold text-sm lg:text-xl !mt-4">
-            {selectedCurrency === "egp" ? `${translations.egp}` : "$"}
+            {selectedCurrency === "egp" ? `${translations.egp}` : "$"}{" "}
             {convertAmount(product.price).toFixed(2)}
           </p>
           <div className="!mt-8 justify-end flex">
@@ -300,7 +302,7 @@ function ProductView({
           </div>
         </div>
       </div>
-      <hr className="hr" />
+      <hr className="border! mt-20! text-gray-500/80 mx-5!" />
       {/* Related Products Section */}
       <div className="">
         <section className="max-w-full">

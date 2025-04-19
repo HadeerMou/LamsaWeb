@@ -169,7 +169,6 @@ function Profile({ toggleCartVisibility, cart, totalQuantity }) {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        console.log("Token:", token);
         const response = await axios.get(`${API_BASE_URL}/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`, // Attach token for authentication
@@ -177,7 +176,6 @@ function Profile({ toggleCartVisibility, cart, totalQuantity }) {
         });
 
         if (isMounted) {
-          console.log("Profile Response:", response.data.data);
           setUserData(response.data.data);
           fetchOrders();
         }
@@ -214,26 +212,30 @@ function Profile({ toggleCartVisibility, cart, totalQuantity }) {
       <div className="min-h-screen bg-gray-100">
         {/* Header */}
         <div className="bg-red-300 text-white !py-6 !px-4 text-center">
-          <h1 className="text-2xl font-bold">My Profile</h1>
+          <h1 className="text-2xl font-bold">{translations.myprofile}</h1>
         </div>
         {/* Profile Info */}
         <div className="max-w-4xl !mx-auto bg-white shadow-md rounded-lg !mt-6 !p-6">
-          <h2 className="text-xl font-bold !mb-4">Account Information</h2>
+          <h2 className="text-xl font-bold !mb-4">{translations.accinfo}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <p className="text-gray-600! font-medium">Name</p>
+              <p className="text-gray-600! font-medium">{translations.name}</p>
               <p className="text-gray-800!">{userData?.username}</p>
             </div>
             <div>
-              <p className="text-gray-600! font-medium">Email</p>
+              <p className="text-gray-600! font-medium">{translations.email}</p>
               <p className="text-gray-800!">{userData?.email}</p>
             </div>
             <div>
-              <p className="text-gray-600! font-medium">Phone</p>
+              <p className="text-gray-600! font-medium">
+                {translations.number}
+              </p>
               <p className="text-gray-800!">{userData?.phone}</p>
             </div>
             <div>
-              <p className="text-gray-600! font-medium">Address</p>
+              <p className="text-gray-600! font-medium">
+                {translations.address}
+              </p>
               <p className="text-gray-800!">
                 {userAddress &&
                 locationNames.city &&
@@ -246,22 +248,22 @@ function Profile({ toggleCartVisibility, cart, totalQuantity }) {
           </div>
           <button
             onClick={() => navigate("/profile/addresses")}
-            className="!mt-6 bg-blue-600! text-white !py-2 !px-4 rounded hover:bg-blue-700!"
+            className="!mt-6 bg-blue-600! text-white !py-2 !px-4 rounded hover:bg-blue-700! cursor-pointer"
           >
-            Edit Profile
+            {translations.editprof}
           </button>
         </div>
         {/* Order History */}
         <div className="max-w-4xl !mx-auto bg-white shadow-md rounded-lg !mt-6 !p-6">
-          <h2 className="text-xl font-bold !mb-4">Order History</h2>
+          <h2 className="text-xl font-bold !mb-4">{translations.ordhistory}</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="!py-2 px-4!">Order ID</th>
-                  <th className="!py-2 px-4!">Date</th>
-                  <th className="!py-2 px-4!">Total</th>
-                  <th className="!py-2 px-4!">Status</th>
+                  <th className="!py-2 px-4!">{translations.orderId}</th>
+                  <th className="!py-2 px-4!">{translations.date}</th>
+                  <th className="!py-2 px-4!">{translations.total}</th>
+                  <th className="!py-2 px-4!">{translations.status}</th>
                 </tr>
               </thead>
               <tbody>
@@ -312,13 +314,15 @@ function Profile({ toggleCartVisibility, cart, totalQuantity }) {
         </div>
         {/* Account Settings */}
         <div className="max-w-4xl !mx-auto bg-white shadow-md rounded-lg !mt-6 !p-6">
-          <h2 className="text-xl font-bold !mb-4">Account Settings</h2>
+          <h2 className="text-xl font-bold !mb-4">
+            {translations.accsettings}
+          </h2>
           <div className="flex flex-col gap-4">
             <button
               onClick={() => navigate("/forgot-password")}
               className="!bg-red-300 text-white !py-2 !px-4 rounded hover:bg-gray-900! cursor-pointer"
             >
-              Change Password
+              {translations.changpass}
             </button>
             {/*  <button className="!bg-red-600 text-white !py-2 !px-4 rounded hover:bg-red-700! cursor-pointer">
               Delete Account

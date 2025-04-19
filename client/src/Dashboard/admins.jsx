@@ -7,7 +7,6 @@ import axios from "axios";
 
 function AdminPage() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
   const [admins, setAdmins] = useState([]);
   const [editingAdmin, setEditingAdmin] = useState(null);

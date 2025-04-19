@@ -4,14 +4,12 @@ import useProducts from "./useProducts"; // Import useProducts
 
 const useOrders = () => {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
-
   const [orders, setOrders] = useState([]);
   const { fetchProductDetails } = useProducts(); // Get fetchProductDetails function
 
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-
       if (!token) {
         alert("Unauthorized: Please log in again");
         return;
@@ -30,8 +28,6 @@ const useOrders = () => {
       }
 
       setOrders(fetchedOrders);
-      console.log("Fetched Orders:", fetchedOrders);
-
       fetchProductDetails(fetchedOrders); // ✅ Pass orders to fetch product details
     } catch (error) {
       console.error("Error fetching orders:", error);

@@ -29,10 +29,8 @@ export default function About({ toggleCartVisibility, cart, totalQuantity }) {
         style={{ backgroundImage: "url('/assets/9008 mockup.jpg')" }}
       >
         <div className="!pt-100 !p-20">
-          <h1 className="!text-5xl text-white lg:text-gray-800">
-            {translations.abtit}
-          </h1>
-          <p className="!mt-14 text-lg max-w-3xl">{translations.intro}</p>
+          <h1 className="!text-5xl text-white/90">{translations.abtit}</h1>
+          <p className="!mt-14 text-black-300! bg-red-300/80 p-2! text-lg max-w-3xl">{translations.intro}</p>
         </div>
       </section>
       <div className="scroll overflow-hidden flex">

@@ -19,22 +19,24 @@ export default function Contact({ toggleCartVisibility, cart, totalQuantity }) {
         <main className="flex-grow">
           <div class="flex flex-col gap-2 lg:gap-4 !py-10 line-clamp-2 items-center font-bold justify-center text-center">
             <h2 class="flex text-4xl lg:text-6xl!">
-              Consult with{" "}
+              {translations.contactwith}{" "}
               <img
                 src="/assets/Untitled-1-20.jpg"
-                className="flex !mx-1 !w-16 h-8 lg:h-12 lg:w-25! rounded-full"
+                className="flex !mx-1 !w-12 h-8 lg:h-12 lg:w-22! rounded-full"
               ></img>{" "}
-              us
+              {translations.us}
             </h2>
             <h2 className="flex text-4xl lg:text-6xl!">
               {" "}
               <img
                 src="/assets/Untitled-1-20.jpg"
-                className="!mx-2 !w-16 h-8 lg:h-12 lg:w-25! rounded-full"
+                className="!mx-2 !w-12 h-8 lg:h-12 lg:w-22! rounded-full"
               ></img>
-              before you
+              {translations.beforeyou}
             </h2>
-            <h2 className="flex text-4xl lg:text-6xl!">commit</h2>
+            <h2 className="flex text-4xl lg:text-6xl!">
+              {translations.commit}
+            </h2>
           </div>
           <div className="scroll overflow-hidden flex lg:my-20! bg-red-300/50 ">
             <ul className="flex gap-4 sm:gap-10 items-center py-2! lg:py-4! animate-[infinite-scroll_60s_linear_infinite]">
@@ -80,26 +82,26 @@ export default function Contact({ toggleCartVisibility, cart, totalQuantity }) {
               className="h-1/4! w-3/6! lg:w-2/7! rounded-2xl lg:rounded-4xl lg:ms-60! ms-2! "
             />
             <div className="w-1/2 pe-1! lg:pe-0! lg:w-1/3 ps-3! lg:ps-20! flex flex-col !mt-5">
-              <h3 className="lg:text-5xl!">Get in Touch</h3>
+              <h3 className="lg:text-5xl!">{translations.getintouch}</h3>
               <div className="flex justify-between mt-5! lg:mt-20! text-xs! lg:text-lg!">
-                <p className="text-black/70!">Email</p>
+                <p className="text-black/70!">{translations.email}</p>
                 <Link to={"mailto:1998.sudik@gmail.com"}>
                   1998.sudik@gmail.com
                 </Link>
               </div>
               <hr className="border! border-black/40!" />
               <div className="flex justify-between mt-4! lg:mt-20! text-xs! lg:text-lg!">
-                <p className="text-black/70!">Number</p>
+                <p className="text-black/70!">{translations.number}</p>
                 <Link>+012345678</Link>
               </div>
               <hr className="border! border-black/40!" />
               <div className="flex justify-between mt-5! lg:mt-20! text-xs! lg:text-lg!">
-                <p className="text-black/70!">Address</p>
+                <p className="text-black/70!">{translations.address}</p>
                 <Link>Cairo - Egypt</Link>
               </div>
               <hr className="border! border-black/40!" />
               <div className="flex flex-col py-8! lg:py-20!">
-                <h3 className="lg:text-5xl!">Follow Us</h3>
+                <h3 className="lg:text-5xl!">{translations.follow}</h3>
                 <ul className="mt-4! lg:mt-10! flex justify-end gap-6 md:gap-8">
                   <li>
                     <a

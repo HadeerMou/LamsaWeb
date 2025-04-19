@@ -543,7 +543,7 @@ function Dshproducts() {
                     })
                   }
                 />
-                <label htmlFor="">Color</label>
+                <label htmlFor="">{translations.color}</label>
                 <input
                   type="text"
                   placeholder="Color"

@@ -181,15 +181,15 @@ function ShippingFees() {
           <DASHHeader OpenSidebar={OpenSidebar} />
           <main>
             <div class="customers">
-              <h2 className="">Shipping Fees</h2>
+              <h2 className="">{translations.shippingfees}</h2>
               <table>
                 <thead>
                   <tr>
                     <th className="select">{translations.select}</th>
-                    <th className="adminid">City Id</th>
-                    <th className="name">Name</th>
-                    <th>Shipping-fees</th>
-                    <th>Actions</th>
+                    <th className="adminid">{translations.cityId}</th>
+                    <th className="name">{translations.name}</th>
+                    <th>{translations.shippingfees}</th>
+                    <th>{translations.action}</th>
                   </tr>
                 </thead>
                 <tbody>

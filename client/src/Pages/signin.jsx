@@ -19,7 +19,6 @@ function Signin({ userType }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(""); // Reset errors
-    console.log("API Base URL:", import.meta.env.VITE_API_URL);
     try {
       const response = await axios.post(
         `${API_BASE_URL}/auth/login`,

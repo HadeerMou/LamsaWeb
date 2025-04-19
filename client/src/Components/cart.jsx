@@ -112,24 +112,23 @@ export default function Cart({
         } md:w-[400px] sm:w-full`}
       >
         <div className="cart-header flex justify-between items-center !mb-6 bg-red-300 rounded-sm !p-1.5">
+          <div className="cart-total flex font-bold gap-4">
+            <span>
+              {translations.totalItems}: {totalQuantity}
+            </span>
+            <span>
+              {" "}
+              {translations.totalPrice}: {`${totalPrice}`}
+            </span>
+          </div>
           <div className="close flex gap-3">
+            <h2 className="font-semibold">{translations.cart}</h2>
             <button
               className="font-bold !px-3 cursor-pointer"
               onClick={toggleCartVisibility}
             >
               X
             </button>
-            <h2 className="font-semibold">Cart</h2>
-          </div>
-
-          <div className="cart-total flex font-bold gap-4">
-            <span>
-              {translations.totalItems}:{totalQuantity}
-            </span>
-            <span>
-              {" "}
-              {translations.totalPrice}:{`${totalPrice}`}
-            </span>
           </div>
         </div>
         <div className="flex-grow overflow-y-auto">
@@ -153,7 +152,7 @@ export default function Cart({
                       : productInfo?.nameEn}
                   </div>
                   <div className="total-price text-red">
-                    {selectedCurrency === "egp" ? `${translations.egp}` : "$"}
+                    {selectedCurrency === "egp" ? `${translations.egp}` : "$"}{" "}
                     {(convertedPrice * (item.quantity || 0)).toFixed(2)}
                   </div>
                   <div className="quantity space-x-1 flex items-center gap-2">

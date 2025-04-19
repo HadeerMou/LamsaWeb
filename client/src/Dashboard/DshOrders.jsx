@@ -4,8 +4,11 @@ import DASHHeader from "./DashboardComponents/dashHeader";
 import DashSidebar from "./DashboardComponents/dashSidebar";
 import { useTranslation } from "../TranslationContext";
 import axios from "axios";
-/* import { calculateTotalPrice, convertAmount } from "../Utils/CartUtils";
- */ import { useCurrency } from "../CurrencyContext";
+import { useCurrency } from "../CurrencyContext";
+import { IoBagAdd } from "react-icons/io5";
+import { LuBaggageClaim } from "react-icons/lu";
+import { IoBagCheck } from "react-icons/io5";
+import { BsBagXFill } from "react-icons/bs";
 
 function DshOrders() {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -204,7 +207,7 @@ function DshOrders() {
                       <h1>{totalOrders.length}</h1>
                     </div>
                     <div class="icon">
-                      <i class="fa-solid fa-bag-shopping"></i>
+                      <IoBagAdd size={40} />
                     </div>
                   </div>
                   <small class="time">{translations.time}</small>
@@ -219,7 +222,7 @@ function DshOrders() {
                       <h1>{pendingOrders.length}</h1>
                     </div>
                     <div class="icon">
-                      <i class="fa-solid fa-spinner"></i>
+                      <LuBaggageClaim size={40} />
                     </div>
                   </div>
                   <small class="time">{translations.time}</small>
@@ -236,7 +239,7 @@ function DshOrders() {
                       <h1>{DeliverdOrders.length}</h1>
                     </div>
                     <div class="icon">
-                      <i class="fa-solid fa-clipboard-list"></i>
+                      <IoBagCheck size={40} />
                     </div>
                   </div>
                   <small class="time">{translations.time}</small>
@@ -253,7 +256,7 @@ function DshOrders() {
                       <h1>{cancelledOrders.length}</h1>
                     </div>
                     <div class="icon">
-                      <i class="fa-solid fa-ban"></i>
+                      <BsBagXFill size={40} />
                     </div>
                   </div>
                   <small class="time">{translations.time}</small>
@@ -287,15 +290,15 @@ function DshOrders() {
                     );
                     return (
                       <div className="orderCard" key={order.id}>
-                        <div className="info">
+                        <div className="flex justify-between items-center">
                           <div className="left">
                             <h3>{user.username || "Unknown User"}</h3>
-                            <p className="order">
+                            <p className="">
                               {translations.orderno}#{order.id}
                             </p>
                           </div>
                           <div className="right">
-                            <p className="new">
+                            <p className="">
                               {formattedDate} <br /> {formattedTime}
                             </p>
                           </div>
@@ -323,20 +326,22 @@ function DshOrders() {
                                   alt={product.name || "Product"}
                                 />
                               </div>
-                              <div className="left">
-                                <h3 className="prodname">
-                                  {language === "ar"
-                                    ? product.nameAr
-                                    : product.nameEn || "Unknown Product"}
-                                </h3>
-                                <p className="price">
-                                  {product.price
-                                    ? `${product.price} EGP`
-                                    : "N/A"}
-                                </p>
-                              </div>
-                              <div className="right">
-                                <h3>{item.quantity} x</h3>
+                              <div className="flex gap-34">
+                                <div className="left">
+                                  <h3 className="prodname">
+                                    {language === "ar"
+                                      ? product.nameAr
+                                      : product.nameEn || "Unknown Product"}
+                                  </h3>
+                                  <p className="price">
+                                    {product.price
+                                      ? `${product.price} EGP`
+                                      : "N/A"}
+                                  </p>
+                                </div>
+                                <div className="right">
+                                  <p>{item.quantity} x</p>
+                                </div>
                               </div>
                             </div>
                           );
