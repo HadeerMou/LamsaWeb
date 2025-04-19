@@ -13,7 +13,6 @@ import { Payload } from 'src/types';
 import { Users, Admins } from '@prisma/client';
 import Verification from 'src/shared/utils/verfication/Verification';
 import { ResetPasswordDTO } from './dto/resetPassword.dto';
-import { CreateUserDto } from 'src/users/dto/createUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -62,22 +61,10 @@ export class AuthService {
 
   async signUp(user: Record<string, any>, userType: string) {
     if (userType === Role.User.toString()) {
-      // Check if the user already exists (before verifying the email)
-      try {
-        await this.userService.create(user as CreateUserDto); // This will throw if there's a conflict
-      } catch (error) {
-        if (error instanceof BadRequestException) {
-          throw error; // Re-throw if user already exists
-        }
-      }
-
-      // Now verify the email after ensuring the user does not exist
       if (!(await this.userService.isVerified(user.email))) {
         throw new BadRequestException('Email is not verified');
       }
-
-      // Proceed with further logic, such as OTP sending, etc.
-      return await this.userService.create(user as CreateUserDto);
+      return await this.userService.create(user as any);
     }
   }
 
