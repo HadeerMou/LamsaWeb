@@ -13,6 +13,7 @@ import { Payload } from 'src/types';
 import { Users, Admins } from '@prisma/client';
 import Verification from 'src/shared/utils/verfication/Verification';
 import { ResetPasswordDTO } from './dto/resetPassword.dto';
+import { CreateUserDto } from 'src/users/dto/createUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -61,34 +62,22 @@ export class AuthService {
 
   async signUp(user: Record<string, any>, userType: string) {
     if (userType === Role.User.toString()) {
-      const existingUserByEmail = await prisma.users.findUnique({
-        where: { email: user.email },
-      });
-
-      if (existingUserByEmail) {
-        if (!existingUserByEmail.isVerified) {
-          throw new BadRequestException('Email is not verified');
+      // Check if the user already exists (before verifying the email)
+      try {
+        await this.userService.create(user as CreateUserDto); // This will throw if there's a conflict
+      } catch (error) {
+        if (error instanceof BadRequestException) {
+          throw error; // Re-throw if user already exists
         }
-        throw new BadRequestException('Email already exists');
       }
 
-      const existingUserByUsername = await prisma.users.findUnique({
-        where: { username: user.username },
-      });
-
-      if (existingUserByUsername) {
-        throw new BadRequestException('Username already exists');
+      // Now verify the email after ensuring the user does not exist
+      if (!(await this.userService.isVerified(user.email))) {
+        throw new BadRequestException('Email is not verified');
       }
 
-      const existingUserByPhone = await prisma.users.findUnique({
-        where: { phone: user.phone },
-      });
-
-      if (existingUserByPhone) {
-        throw new BadRequestException('Phone number already exists');
-      }
-
-      return await this.userService.create(user as any);
+      // Proceed with further logic, such as OTP sending, etc.
+      return await this.userService.create(user as CreateUserDto);
     }
   }
 
