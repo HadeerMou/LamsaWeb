@@ -41,6 +41,7 @@ export class ProductImagesService {
         ftpClient.on('ready', () => {
           ftpClient.put(imageFile.buffer, remoteFilePath, (err) => {
             if (err) {
+              console.error('FTP Upload Error:', err);
               reject(err);
             } else {
               resolve(null);
@@ -50,6 +51,7 @@ export class ProductImagesService {
         });
 
         ftpClient.on('error', (err) => {
+          console.error("FTP Connection Error:", err);
           reject(err);
         });
 

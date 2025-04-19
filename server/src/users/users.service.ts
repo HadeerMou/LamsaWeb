@@ -12,13 +12,6 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 @Injectable()
 export class UsersService {
   async create(user: CreateUserDto) {
-    // Check if the OTP was verified
-    const isOtpVerified = await this.isVerified(user.email);
-    if (!isOtpVerified) {
-      throw new BadRequestException(
-        'Email is not verified. Please verify OTP.',
-      );
-    }
     const existingUser = await prisma.users.findFirst({
       where: {
         OR: [
@@ -30,19 +23,23 @@ export class UsersService {
     });
 
     if (existingUser) {
-      if (existingUser.email === user.email) {
-        throw new BadRequestException('Email already exists');
-      }
-      if (existingUser.username === user.username) {
-        throw new BadRequestException('Username already exists');
-      }
-      if (existingUser.phone === user.phone) {
-        throw new BadRequestException('Phone number already exists');
-      }
+      const conflicts: string[] = [];
+      if (existingUser.email === user.email) conflicts.push('Email');
+      if (existingUser.username === user.username) conflicts.push('Username');
+      if (existingUser.phone === user.phone) conflicts.push('Phone');
+
+      throw new BadRequestException(`${conflicts.join(', ')} already exists.`);
     }
 
     user.password = await bcrypt.hash(user.password, 10);
 
+    // Check if the OTP was verified
+    const isOtpVerified = await this.isVerified(user.email);
+    if (!isOtpVerified) {
+      throw new BadRequestException(
+        'Email is not verified. Please verify OTP.',
+      );
+    }
     return await prisma.users.create({
       data: {
         ...user,
