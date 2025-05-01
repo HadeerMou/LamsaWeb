@@ -53,6 +53,25 @@ export class UsersService {
     });
   }
 
+  async createFromFirebase(email: string, firebaseUid: string) {
+    const existing = await prisma.users.findUnique({ where: { email } });
+
+    if (existing) return existing;
+    return await prisma.users.create({
+      data: {
+        email,
+        firebaseUid,
+        // Add other defaults like name, etc., if you want
+        username: `user_${firebaseUid}`,
+        password: 'firebase_placeholder_password', // Or hash a random one
+        phone: '', // placeholder
+        carts: {
+          create: {},
+        },
+      },
+    });
+  }
+
   async update(id: number, user: UpdateUserDto): Promise<any> {
     const userToUpdate = await prisma.users.findUnique({ where: { id } });
     if (!userToUpdate) {

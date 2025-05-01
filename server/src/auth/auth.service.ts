@@ -13,6 +13,7 @@ import { Payload } from 'src/types';
 import { Users, Admins } from '@prisma/client';
 import Verification from 'src/shared/utils/verfication/Verification';
 import { ResetPasswordDTO } from './dto/resetPassword.dto';
+import admin from 'src/shared/firebase/firebase';
 
 @Injectable()
 export class AuthService {
@@ -57,6 +58,44 @@ export class AuthService {
     return {
       accessToken,
     };
+  }
+
+  async firebaseLogin(idToken: string) {
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      const firebaseUid = decodedToken.uid;
+      const email = decodedToken.email;
+
+      if (!email) {
+        throw new BadRequestException('Firebase token missing email');
+      }
+
+      // Try to find the user in your database
+      let user = await prisma.users.findUnique({ where: { email } });
+
+      // If user doesn't exist, optionally create them
+      if (!user) {
+        user = await this.userService.createFromFirebase(email, firebaseUid); // You need to implement this
+      }
+
+      if (user.deletedAt) {
+        throw new NotFoundException('User is deleted');
+      }
+
+      const payload: Payload = {
+        sub: user.id,
+        role: Role.User.toString(),
+      };
+
+      const accessToken = await this.jwtService.signAsync(payload);
+
+      return {
+        accessToken,
+      };
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException('Invalid Firebase token');
+    }
   }
 
   async signUp(user: Record<string, any>, userType: string) {
