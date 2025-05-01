@@ -15,8 +15,6 @@ import { Throttle } from '@nestjs/throttler';
 import { ResetPasswordDTO } from './dto/resetPassword.dto';
 import { verifyTokenDto } from './dto/verifyToken.dto';
 import { JoiValidationPipe } from 'src/shared/utils/joiValidations';
-import { FirebaseLoginDto } from './dto/firebase-login.dto';
-import admin from 'src/shared/firebase/firebase';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -47,11 +45,6 @@ export class AuthController {
       message: 'Login successful',
       data,
     };
-  }
-  // auth.controller.ts
-  @Post('firebase-login')
-  async firebaseLogin(@Body() body: FirebaseLoginDto) {
-    return this.authService.firebaseLogin(body.idToken);
   }
 
   @ApiOperation({ summary: 'User signUp' })
